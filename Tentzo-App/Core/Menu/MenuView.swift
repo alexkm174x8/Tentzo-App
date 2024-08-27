@@ -26,41 +26,41 @@ struct MenuView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                VStack {
-                    HStack {
-                        Image("pp")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
-                            .padding(.leading, 20)
-                            .background(Color.blue)
+                HStack {
+                    Image("pp")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                        .padding(.leading, 20)
+                        .background(Color.blue)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("¡Hola!, Fernanda")
+                            .font(.title)
+                            .fontWeight(.regular)
+                            .foregroundStyle(.white)
                         
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("¡Hola!, Fernanda")
-                                .font(.title)
-                                .fontWeight(.regular)
+                        HStack {
+                            Image(systemName: "location.fill")
                                 .foregroundStyle(.white)
-                            
-                            HStack {
-                                Image(systemName: "location.fill")
-                                    .foregroundStyle(.white)
-                                Text("Calle 27 #142B")
-                                    .foregroundStyle(.white)
-                            }
-                            Text("Mis puntos: 114")
+                            Text("Calle 27 #142B")
                                 .foregroundStyle(.white)
                         }
-                        .padding(.leading, 10)
-                        
-                        Spacer()
+                        Text("Mis puntos: 114")
+                            .foregroundStyle(.white)
                     }
-                    .padding()
+                    .padding(.leading, 10)
+                    
+                    Spacer()
                 }
-                .background(Color(red: 83/255, green: 135/255, blue: 87/255))
-                .clipShape(RoundedCorner(radius: 25, corners: [.bottomLeft, .bottomRight]))
-                Spacer()
+                .padding()
+                //aqui continuo co mis insignias
             }
+            .background(Color(red: 83/255, green: 135/255, blue: 87/255))
+            .clipShape(RoundedCorner(radius: 25, corners: [.bottomLeft, .bottomRight]))
+            Spacer()
+
         }
     }
 }
