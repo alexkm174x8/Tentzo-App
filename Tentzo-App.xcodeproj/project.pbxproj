@@ -11,6 +11,7 @@
 		833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C902A2C7E559F00A24C0A /* ContentView.swift */; };
 		833C902D2C7E55A100A24C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 833C902C2C7E55A100A24C0A /* Assets.xcassets */; };
 		833C90302C7E55A100A24C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 833C902F2C7E55A100A24C0A /* Preview Assets.xcassets */; };
+		833C90422C7E57DE00A24C0A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C90412C7E57DE00A24C0A /* MenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		833C902A2C7E559F00A24C0A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		833C902C2C7E55A100A24C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		833C902F2C7E55A100A24C0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		833C90412C7E57DE00A24C0A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 		833C90402C7E560900A24C0A /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				833C90412C7E57DE00A24C0A /* MenuView.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */,
+				833C90422C7E57DE00A24C0A /* MenuView.swift in Sources */,
 				833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
