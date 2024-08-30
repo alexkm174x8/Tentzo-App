@@ -12,6 +12,9 @@
 		833C902D2C7E55A100A24C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 833C902C2C7E55A100A24C0A /* Assets.xcassets */; };
 		833C90302C7E55A100A24C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 833C902F2C7E55A100A24C0A /* Preview Assets.xcassets */; };
 		833C90422C7E57DE00A24C0A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C90412C7E57DE00A24C0A /* MenuView.swift */; };
+		83A2DC162C823B18001588C0 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC152C823B18001588C0 /* Profile.swift */; };
+		83A2DC1C2C82462B001588C0 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC1B2C82462B001588C0 /* Badges.swift */; };
+		83A2DC1E2C824663001588C0 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC1D2C824663001588C0 /* Services.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +24,9 @@
 		833C902C2C7E55A100A24C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		833C902F2C7E55A100A24C0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		833C90412C7E57DE00A24C0A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		83A2DC152C823B18001588C0 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		83A2DC1B2C82462B001588C0 /* Badges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badges.swift; sourceTree = "<group>"; };
+		83A2DC1D2C824663001588C0 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,9 @@
 			isa = PBXGroup;
 			children = (
 				833C90412C7E57DE00A24C0A /* MenuView.swift */,
+				83A2DC152C823B18001588C0 /* Profile.swift */,
+				83A2DC1B2C82462B001588C0 /* Badges.swift */,
+				83A2DC1D2C824663001588C0 /* Services.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -220,7 +229,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83A2DC1C2C82462B001588C0 /* Badges.swift in Sources */,
+				83A2DC1E2C824663001588C0 /* Services.swift in Sources */,
 				833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */,
+				83A2DC162C823B18001588C0 /* Profile.swift in Sources */,
 				833C90422C7E57DE00A24C0A /* MenuView.swift in Sources */,
 				833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */,
 			);
