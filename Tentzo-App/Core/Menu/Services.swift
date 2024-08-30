@@ -11,7 +11,7 @@ struct Services: View {
                         .fontWeight(.bold)
                     
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 15)
                             .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
                         
                         HStack(spacing: 5) {
@@ -28,7 +28,6 @@ struct Services: View {
                     }
                 }
                 .padding()
-                Spacer()
                 Rectangle()
                     .cornerRadius(20)
             }
@@ -36,6 +35,44 @@ struct Services: View {
             .padding(.bottom)
             .padding(.trailing)
             .padding(.top, 10)
+            
+            HStack(spacing: 18){
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
+                    
+                    HStack(spacing: 5) {
+                        Image(systemName: "shoeprints.fill")
+                        
+                        VStack {
+                            Text("1,236")
+                                .bold()
+                            Text("pasos")
+                                .foregroundColor(Color.gray)
+                        }
+                    }
+                    .padding()
+                }
+                .frame(width: 170, height: 60)
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
+                    
+                    HStack(spacing: 5) {
+                        Image(systemName: "shoeprints.fill")
+                        
+                        VStack {
+                            Text("1,236")
+                                .bold()
+                            Text("pasos")
+                                .foregroundColor(Color.gray)
+                        }
+                    }
+                    .padding()
+                }
+                .frame(width: 170, height: 60)
+            }
         }
     }
 }
