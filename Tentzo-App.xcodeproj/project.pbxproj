@@ -18,6 +18,7 @@
 		837C33AA2C8786CF0091AF7D /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C33A92C8786CF0091AF7D /* CameraView.swift */; };
 		837C33AC2C8786DA0091AF7D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C33AB2C8786DA0091AF7D /* MapView.swift */; };
 		837C33AE2C8786E40091AF7D /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C33AD2C8786E40091AF7D /* InfoView.swift */; };
+		837C33B02C878DFB0091AF7D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837C33AF2C878DFB0091AF7D /* SearchBar.swift */; };
 		83A2DC162C823B18001588C0 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC152C823B18001588C0 /* Profile.swift */; };
 		83A2DC1C2C82462B001588C0 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC1B2C82462B001588C0 /* Badges.swift */; };
 		83A2DC1E2C824663001588C0 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC1D2C824663001588C0 /* Services.swift */; };
@@ -36,6 +37,7 @@
 		837C33A92C8786CF0091AF7D /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		837C33AB2C8786DA0091AF7D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		837C33AD2C8786E40091AF7D /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		837C33AF2C878DFB0091AF7D /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		83A2DC152C823B18001588C0 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		83A2DC1B2C82462B001588C0 /* Badges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badges.swift; sourceTree = "<group>"; };
 		83A2DC1D2C824663001588C0 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				837C33A72C8786C40091AF7D /* LibraryView.swift */,
+				837C33AF2C878DFB0091AF7D /* SearchBar.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				837C33B02C878DFB0091AF7D /* SearchBar.swift in Sources */,
 				83A2DC1C2C82462B001588C0 /* Badges.swift in Sources */,
 				83A2DC1E2C824663001588C0 /* Services.swift in Sources */,
 				833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */,

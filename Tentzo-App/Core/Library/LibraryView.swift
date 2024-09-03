@@ -4,7 +4,18 @@ import UIKit
 struct LibraryView: View {
     var body: some View {
         NavigationStack {
-            Text("Library")
+            VStack{
+                HStack{
+                    Text("Biblioteca")
+                        .font(.title)
+                        .bold()
+                }
+                HStack{
+                    
+                }
+                
+            }
+            
         }
     }
 }
