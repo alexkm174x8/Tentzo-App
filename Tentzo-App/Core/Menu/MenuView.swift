@@ -8,7 +8,7 @@ struct MenuView: View {
                 Profile()
                 Badges()
                 Services()
-                
+                EmergencyButton()
             }
         }
     }

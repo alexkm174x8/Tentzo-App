@@ -57,7 +57,7 @@ struct Profile: View {
             .background(Color(red: 83/255, green: 135/255, blue: 87/255))
             .clipShape(RoundedCorner(radius: 25, corners: [.bottomLeft, .bottomRight]))
         }
-
+        .shadow(color: Color.black.opacity(0.4), radius: 5, x: 0, y: 5)
     }
 }
 

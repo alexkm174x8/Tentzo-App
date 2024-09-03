@@ -9,10 +9,13 @@ struct Services: View {
                 VStack(alignment: .leading, spacing: 5.0) {
                     Text("Mis Servicios")
                         .fontWeight(.bold)
-                    
+                        .padding(.bottom, 13)
+                        .font(.system(size: 24))
+                
                     ZStack {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
+                            .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
                         
                         HStack(spacing: 5) {
                             Image(systemName: "shoeprints.fill")
@@ -23,6 +26,7 @@ struct Services: View {
                                 Text("pasos")
                                     .foregroundColor(Color.gray)
                             }
+                            .frame(width: 113)
                         }
                         .padding()
                     }
@@ -30,6 +34,7 @@ struct Services: View {
                 .padding()
                 Rectangle()
                     .cornerRadius(20)
+                    .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
             }
             .frame(height: 120)
             .padding(.bottom)
@@ -40,6 +45,7 @@ struct Services: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
+                        .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
                     
                     HStack(spacing: 5) {
                         Image(systemName: "shoeprints.fill")
@@ -58,6 +64,7 @@ struct Services: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
+                        .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
                     
                     HStack(spacing: 5) {
                         Image(systemName: "shoeprints.fill")

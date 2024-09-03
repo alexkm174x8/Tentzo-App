@@ -6,16 +6,41 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView{
+            MenuView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                }
+            
+            LibraryView()
+                .tabItem {
+                    Image(systemName: "leaf.fill")
+                    Text("Library")
+                }
+            
+            CameraView()
+                .tabItem {
+                    Image(systemName: "camera")
+                    Text("Camera")
+                }
+            
+            MapView()
+                .tabItem {
+                    Image(systemName: "map")
+                    Text("Map")
+                }
+            
+            InfoView()
+                .tabItem {
+                    Image(systemName: "person")
+                    Text("Info")
+                }
         }
-        .padding()
     }
 }
 

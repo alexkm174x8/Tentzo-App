@@ -7,6 +7,7 @@ struct Badges: View {
             HStack(alignment: .center, spacing: 10) {
                 Text("Mis Insignias")
                     .bold()
+                    .font(.system(size: 23))
                 VStack {
                     Divider()
                         .background(Color.gray)
@@ -32,6 +33,7 @@ struct Badges: View {
                     .frame(width: 90)
                     .foregroundStyle(Color.green)
             }
+            .padding(.bottom, 20)
         }
 
     }
