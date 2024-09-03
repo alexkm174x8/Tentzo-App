@@ -6,14 +6,22 @@ struct SearchBar: View {
         HStack{
             Image(systemName: "magnifyingglass")
             
-            VStack(alignment: .leading, spacing: 2){
+            VStack(alignment: .trailing, spacing: 2){
                 Text("Busca una planta")
                     .font(.caption2)
                     .foregroundStyle(.gray)
             }
             Spacer()
-            
         }
+        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .overlay {
+            Capsule()
+                .stroke(lineWidth: 0.5)
+                .foregroundStyle(Color(.systemGray4))
+                .shadow(color: .black.opacity(0.4), radius: 2)
+        }
+        .padding()
     }
 }
 

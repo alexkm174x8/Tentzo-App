@@ -10,9 +10,7 @@ struct LibraryView: View {
                         .font(.title)
                         .bold()
                 }
-                HStack{
-                    
-                }
+                SearchBar()
                 
             }
             
