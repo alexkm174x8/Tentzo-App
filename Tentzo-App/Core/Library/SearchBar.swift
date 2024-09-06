@@ -3,7 +3,7 @@ import UIKit
 
 struct SearchBar: View {
     var body: some View {
-        HStack{
+        HStack(){
             Image(systemName: "magnifyingglass")
             
             VStack(alignment: .trailing, spacing: 2){
