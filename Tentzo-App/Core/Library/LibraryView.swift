@@ -2,7 +2,8 @@ import SwiftUI
 import UIKit
 
 struct LibraryView: View {
-    let columns = [GridItem(.flexible()),
+    let columns = [
+    GridItem(.flexible()),
     GridItem(.flexible()),
     GridItem(.flexible()),
     ]
