@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		799FE9F32C92476C00A7C307 /* RouteDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799FE9F22C92476C00A7C307 /* RouteDetails.swift */; };
 		833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */; };
 		833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C902A2C7E559F00A24C0A /* ContentView.swift */; };
 		833C902D2C7E55A100A24C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 833C902C2C7E55A100A24C0A /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		799FE9F22C92476C00A7C307 /* RouteDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetails.swift; sourceTree = "<group>"; };
 		833C90252C7E559F00A24C0A /* Tentzo-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tentzo-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tentzo_AppApp.swift; sourceTree = "<group>"; };
 		833C902A2C7E559F00A24C0A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -56,6 +58,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		799FE9F02C92466800A7C307 /* Routes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Routes;
+			sourceTree = "<group>";
+		};
+		799FE9F12C92474C00A7C307 /* RouteDetails */ = {
+			isa = PBXGroup;
+			children = (
+				799FE9F22C92476C00A7C307 /* RouteDetails.swift */,
+			);
+			path = RouteDetails;
+			sourceTree = "<group>";
+		};
 		833C901C2C7E559F00A24C0A = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +136,8 @@
 		833C90392C7E55DC00A24C0A /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				799FE9F12C92474C00A7C307 /* RouteDetails */,
+				799FE9F02C92466800A7C307 /* Routes */,
 				833C90402C7E560900A24C0A /* Menu */,
 				833C903F2C7E560200A24C0A /* Library */,
 				833C903E2C7E55FC00A24C0A /* Camera */,
@@ -254,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				837C33B02C878DFB0091AF7D /* SearchBar.swift in Sources */,
+				799FE9F32C92476C00A7C307 /* RouteDetails.swift in Sources */,
 				83A2DC1C2C82462B001588C0 /* Badges.swift in Sources */,
 				83A2DC1E2C824663001588C0 /* Services.swift in Sources */,
 				833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */,
