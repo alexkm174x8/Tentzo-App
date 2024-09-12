@@ -1,28 +1,43 @@
 import SwiftUI
 import MapKit
 
-//Bug: Sometimes while swiping down the map moves instead of the Route view
+//For map lock
+struct MapViewRepresentable: UIViewRepresentable {
+    var isInteractionDisabled: Bool
+
+    func makeUIView(context: Context) -> MKMapView {
+        MKMapView()
+    }
+
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+        uiView.isScrollEnabled = !isInteractionDisabled
+        uiView.isZoomEnabled = !isInteractionDisabled
+        uiView.isRotateEnabled = !isInteractionDisabled
+        uiView.isPitchEnabled = !isInteractionDisabled
+    }
+}
+
 
 struct MapView: View {
     @State private var isExpanded: Bool = false
     
     var body: some View {
-        VStack{
-            ZStack(alignment: .bottom){
-                Map()
+        VStack {
+            ZStack(alignment: .bottom) {
+                MapViewRepresentable(isInteractionDisabled: isExpanded)
                     .ignoresSafeArea(.container, edges: .top)
-                        
-                VStack{
+                
+                VStack {
                     VStack {
-                        HStack{
-                            RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
+                        HStack {
+                            RoundedRectangle(cornerRadius: 25.0)
                                 .frame(width: 35, height: 5)
                                 .foregroundStyle(Color(.lightGray))
-                                .padding(.top , 10)
+                                .padding(.top, 10)
                                 .opacity(0.3)
                         }
                         
-                        HStack(alignment: .top){
+                        HStack(alignment: .top) {
                             Image(systemName: "map.fill")
                                 .foregroundStyle(.green)
                             Text("Rutas")
@@ -30,17 +45,17 @@ struct MapView: View {
                                 .foregroundStyle(.green)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 15 )
+                        .padding(.leading, 15)
                         RoutePreview()
                         RoutePreview()
                         RoutePreview()
                     }
-                    .frame(maxHeight: .infinity, alignment: .top) // Alinear al principio
+                    .frame(maxHeight: .infinity, alignment: .top)
                 }
-                .frame(height: isExpanded ? 700 : 152, alignment: .top) // Alinear al principio
+                .frame(height: isExpanded ? 700 : 152, alignment: .top)
                 .background(.white)
                 .clipShape(RoundedCorner(radius: 25.0, corners: [.topLeft, .topRight]))
-                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: -10) // Top shadow only
+                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: -10)
                 .transition(.move(edge: .bottom))
                 .gesture(
                     DragGesture()
