@@ -1,6 +1,8 @@
 import SwiftUI
 import MapKit
 
+//Bug: Sometimes while swiping down the map moves instead of the Route view
+
 struct MapView: View {
     @State private var isExpanded: Bool = false
     
@@ -35,7 +37,7 @@ struct MapView: View {
                     }
                     .frame(maxHeight: .infinity, alignment: .top) // Alinear al principio
                 }
-                .frame(height: isExpanded ? 700 : 150, alignment: .top) // Alinear al principio
+                .frame(height: isExpanded ? 700 : 152, alignment: .top) // Alinear al principio
                 .background(.white)
                 .clipShape(RoundedCorner(radius: 25.0, corners: [.topLeft, .topRight]))
                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: -10) // Top shadow only
