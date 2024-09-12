@@ -10,19 +10,8 @@ struct LibraryView: View {
     
     var body: some View {
         NavigationStack {
-            VStack{
-                HStack(){
-                    Text("Biblioteca")
-                        .font(.title)
-                        .bold()
-                    Spacer()
-                }
-                .padding(.leading, 15)
-                SearchBar()
-            }
-            .cornerRadius(10)
+            SearchBar()
             ScrollView{
-                
                 LazyVStack(spacing: 20){
                     //ForEach(plants, id: \.self) {plant in
                         //NavigationLink(value: plant){
@@ -31,12 +20,19 @@ struct LibraryView: View {
                     
                 }
                 LazyVGrid(columns: columns, spacing: 30) {
-                    ForEach(0 ... 50, id: \.self) { value in
-                        PlantInfo()
+                    ForEach(0 ... 50, id: \.self) { plant in
+                        NavigationLink(value: plant){
+                            PlantInfo()
+                        }
                     }
+                }
+                .navigationDestination(for: Int.self) {
+                    PlantDetails()
+                        .navigationBarBackButtonHidden()
                 }
                 
             }
+            .navigationTitle("Biblioteca")
         }
     }
 }

@@ -23,6 +23,7 @@
 		83A2DC1E2C824663001588C0 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A2DC1D2C824663001588C0 /* Services.swift */; };
 		83B6A1B72C922DDB001489F7 /* RoutePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6A1B62C922DDB001489F7 /* RoutePreview.swift */; };
 		83BAFBF42C934ACD0010D0E4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BAFBF32C934ACD0010D0E4 /* MapView.swift */; };
+		83BAFBF62C937B100010D0E4 /* PlantDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BAFBF52C937B100010D0E4 /* PlantDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		83A2DC1D2C824663001588C0 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		83B6A1B62C922DDB001489F7 /* RoutePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePreview.swift; sourceTree = "<group>"; };
 		83BAFBF32C934ACD0010D0E4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		83BAFBF52C937B100010D0E4 /* PlantDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 				837C33A72C8786C40091AF7D /* LibraryView.swift */,
 				837C33AF2C878DFB0091AF7D /* SearchBar.swift */,
 				83890D5A2C8B7554002535F1 /* PlantInfo.swift */,
+				83BAFBF52C937B100010D0E4 /* PlantDetails.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				83B6A1B72C922DDB001489F7 /* RoutePreview.swift in Sources */,
 				833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */,
 				837C33A22C877CE80091AF7D /* EmergencyButton.swift in Sources */,
+				83BAFBF62C937B100010D0E4 /* PlantDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
