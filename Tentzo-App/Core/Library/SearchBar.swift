@@ -7,7 +7,7 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass")
             
             VStack(alignment: .trailing, spacing: 2){
-                Text("Busca una planta")
+                TextField("Busca una planta", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/.constant("")/*@END_MENU_TOKEN@*/)
                     .font(.caption2)
                     .foregroundStyle(.gray)
             }
