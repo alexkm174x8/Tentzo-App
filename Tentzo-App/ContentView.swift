@@ -16,7 +16,6 @@ struct ContentView: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            
             LibraryView()
                 .tabItem {
                     Image(systemName: "leaf.fill")
