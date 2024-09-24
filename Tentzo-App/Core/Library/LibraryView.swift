@@ -26,7 +26,7 @@ struct LibraryView: View {
                         }
                     }
                 }
-                .navigationDestination(for: Int.self) {
+                .navigationDestination(for: Int.self) {_ in 
                     PlantDetails()
                         .navigationBarBackButtonHidden()
                 }
