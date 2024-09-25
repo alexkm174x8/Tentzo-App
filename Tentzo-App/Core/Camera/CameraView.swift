@@ -127,14 +127,16 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     }
 
     func setUP() {
-
         do {
             self.session.beginConfiguration()
 
             // Only rear camera is used here
-            let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+            guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+                print("No rear camera available")
+                return
+            }
 
-            let input = try AVCaptureDeviceInput(device: device!)
+            let input = try AVCaptureDeviceInput(device: device)
 
             if self.session.canAddInput(input) {
                 self.session.addInput(input)
@@ -149,6 +151,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             print(error.localizedDescription)
         }
     }
+
 
     func takePic() {
 

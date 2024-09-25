@@ -36,6 +36,7 @@
 		833C902F2C7E55A100A24C0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		833C90412C7E57DE00A24C0A /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		834EB9F72CA47C5A00B204AC /* EventsDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsDetails.swift; sourceTree = "<group>"; };
+		834EB9F92CA48F8A00B204AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8353A3F32CA47A9100C3844F /* RouteDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetails.swift; sourceTree = "<group>"; };
 		837C33A12C877CE80091AF7D /* EmergencyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyButton.swift; sourceTree = "<group>"; };
 		837C33A72C8786C40091AF7D /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		833C90272C7E559F00A24C0A /* Tentzo-App */ = {
 			isa = PBXGroup;
 			children = (
+				834EB9F92CA48F8A00B204AC /* Info.plist */,
 				833C903A2C7E55E200A24C0A /* App */,
 				833C90392C7E55DC00A24C0A /* Core */,
 				833C90382C7E55D700A24C0A /* Extensions */,
@@ -414,6 +416,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Tentzo-App/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Tentzo-App/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) camera use";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -442,6 +446,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Tentzo-App/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Tentzo-App/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) camera use";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
