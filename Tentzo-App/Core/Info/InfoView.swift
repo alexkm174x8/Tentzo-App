@@ -56,7 +56,7 @@ struct InfoView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
         }
-            Button(action: {}){
+            NavigationLink(destination: EventsDetails()){
                 HStack{
                     Rectangle() // Here goes the image
                 }
@@ -64,7 +64,7 @@ struct InfoView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 5)
                 .overlay{
-                    Text("Cena con Arte")
+                    Text("Ruta 1")
                         .foregroundStyle(.white)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
@@ -72,7 +72,7 @@ struct InfoView: View {
                 }
             }
             
-            Button(action: {}){
+            NavigationLink(destination: EventsDetails()){
                 HStack{
                     Rectangle() // Here goes the image
                 }
@@ -80,7 +80,7 @@ struct InfoView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 5)
                 .overlay{
-                    Text("Taller de barro")
+                    Text("Ruta 1")
                         .foregroundStyle(.white)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
@@ -88,7 +88,7 @@ struct InfoView: View {
                 }
             }
             
-            Button(action: {}){
+            NavigationLink(destination: EventsDetails()){
                 HStack{
                     Rectangle() // Here goes the image
                 }
@@ -96,7 +96,7 @@ struct InfoView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 5)
                 .overlay{
-                    Text("Cena con Arte")
+                    Text("Ruta 1")
                         .foregroundStyle(.white)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)

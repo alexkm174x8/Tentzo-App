@@ -19,8 +19,7 @@ struct Profile: View {
     var body: some View {
         VStack {
             HStack {
-                Image("pp")
-                    .resizable()
+                Circle()
                     .scaledToFill()
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
