@@ -10,7 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var showPassword: Bool = false // Controla si la contraseña es visible
+    @State private var showPassword: Bool = false
     @Binding var isLoggedIn: Bool
 
     let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
@@ -39,35 +39,31 @@ struct LoginView: View {
                     }
                 }
 
-                // Campo de correo electrónico forzado a minúsculas
                 TextField("Correo", text: $email)
-                    .autocapitalization(.none) // Desactiva la capitalización automática
-                    .keyboardType(.emailAddress) // Tipo de teclado de correo electrónico
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
                     .padding(.horizontal, 25)
                     .padding(.top, 20)
-                    // Nueva implementación de onChange para iOS 17
                     .onChange(of: email) { newValue, _ in
-                        email = newValue.lowercased() // Convierte el correo a minúsculas
+                        email = newValue.lowercased()
                     }
 
-                // Campo de contraseña con opción de ver/ocultar
                 HStack {
                     if showPassword {
                         TextField("Contraseña", text: $password)
-                            .autocapitalization(.none) // Desactiva la capitalización automática
+                            .autocapitalization(.none)
                     } else {
                         SecureField("Contraseña", text: $password)
-                            .autocapitalization(.none) // Desactiva la capitalización automática
+                            .autocapitalization(.none)
                     }
 
-                    // Botón para mostrar/ocultar contraseña
                     Button(action: {
-                        showPassword.toggle() // Alterna entre mostrar y ocultar la contraseña
+                        showPassword.toggle()
                     }) {
-                        Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill") // Icono de ojo
+                        Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill")
                             .foregroundColor(.gray)
                     }
                 }

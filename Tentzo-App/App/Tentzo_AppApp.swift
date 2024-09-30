@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct Tetzo_AppApp: App {
+    init() {
+        FirebaseApp.configure()
+    }
+    
     @State private var isLoading = true
     @State private var isLoggedIn = false
 
