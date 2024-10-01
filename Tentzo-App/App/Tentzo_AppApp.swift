@@ -6,6 +6,18 @@
 //
 
 import SwiftUI
+
+@main
+struct Tentzo_AppApp: App {
+    var body: some Scene {
+        WindowGroup{
+            ContentView()
+        }
+    }
+}
+
+/*
+import SwiftUI
 import FirebaseCore
 
 @main
@@ -45,3 +57,4 @@ struct Tetzo_AppApp: App {
         }
     }
 }
+*/
