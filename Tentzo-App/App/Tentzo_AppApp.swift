@@ -9,9 +9,32 @@ import SwiftUI
 
 @main
 struct Tentzo_AppApp: App {
+    @State private var isLoading = true
+    @State private var isLoggedIn = false
+
     var body: some Scene {
-        WindowGroup{
-            ContentView()
+        WindowGroup {
+            if isLoading {
+                SplashScreenView()
+                    .onAppear {
+                        loadAppData()
+                    }
+            } else {
+                if isLoggedIn {
+                    ContentView()
+                } else {
+                    LoginView(isLoggedIn: $isLoggedIn)
+                }
+            }
+        }
+    }
+    func loadAppData() {
+        DispatchQueue.global(qos: .background).async {
+            Thread.sleep(forTimeInterval: 2)
+
+            DispatchQueue.main.async {
+                isLoading = false
+            }
         }
     }
 }

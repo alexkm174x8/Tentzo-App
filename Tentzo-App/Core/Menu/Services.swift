@@ -32,7 +32,9 @@ struct Services: View {
                     }
                 }
                 .padding()
-                Rectangle()
+                Image("plantD")
+                    .resizable()
+                    .scaledToFit()
                     .cornerRadius(20)
                     .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
             }
@@ -41,7 +43,7 @@ struct Services: View {
             .padding(.trailing)
             .padding(.top, 10)
             
-            HStack(spacing: 18){
+            HStack(spacing: 28){
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(Color(red: 233/255, green: 244/255, blue: 202/255))

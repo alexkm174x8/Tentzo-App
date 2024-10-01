@@ -16,7 +16,6 @@ struct InfoView: View {
                 .padding()
             HStack(spacing: 27){
                 
-                // Missing click function
                 RoundedRectangle(cornerRadius: 30)
                     .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
                     .frame(width: 100, height: 100)
@@ -58,13 +57,19 @@ struct InfoView: View {
         }
             NavigationLink(destination: EventsDetails()){
                 HStack{
-                    Rectangle() // Here goes the image
+                    Image("activity1")
+                        .resizable()
+                        .scaledToFill()
+                        .overlay{
+                            Rectangle()
+                                .fill(LinearGradient(gradient: Gradient(colors: [Color.gray, Color.clear]), startPoint: .bottom, endPoint: .top))
+                        }
                 }
-                .frame(width: 375 ,height: 100)
+                .frame(width: 375 ,height: 120)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 5)
                 .overlay{
-                    Text("Ruta 1")
+                    Text("Taller de barro")
                         .foregroundStyle(.white)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
@@ -74,13 +79,19 @@ struct InfoView: View {
             
             NavigationLink(destination: EventsDetails()){
                 HStack{
-                    Rectangle() // Here goes the image
+                    Image("activity2")
+                        .resizable()
+                        .scaledToFill()
+                        .overlay{
+                            Rectangle()
+                                .fill(LinearGradient(gradient: Gradient(colors: [Color.gray, Color.clear]), startPoint: .bottom, endPoint: .top))
+                        }
                 }
-                .frame(width: 375 ,height: 100)
+                .frame(width: 375 ,height: 120)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 5)
                 .overlay{
-                    Text("Ruta 1")
+                    Text("Cenas con arte")
                         .foregroundStyle(.white)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
@@ -90,13 +101,19 @@ struct InfoView: View {
             
             NavigationLink(destination: EventsDetails()){
                 HStack{
-                    Rectangle() // Here goes the image
+                    Image("activity1")
+                        .resizable()
+                        .scaledToFill()
+                        .overlay{
+                            Rectangle()
+                                .fill(LinearGradient(gradient: Gradient(colors: [Color.gray, Color.clear]), startPoint: .bottom, endPoint: .top))
+                        }
                 }
-                .frame(width: 375 ,height: 100)
+                .frame(width: 375 ,height: 120)
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 5)
                 .overlay{
-                    Text("Ruta 1")
+                    Text("Taller de barro")
                         .foregroundStyle(.white)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)

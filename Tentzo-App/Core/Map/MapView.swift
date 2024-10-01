@@ -49,7 +49,9 @@ struct MapView: View {
                             .padding(.leading, 15)
                             NavigationLink(destination: RouteDetails()){
                                 HStack{
-                                    Rectangle() // Here goes the image
+                                    Image("route1")
+                                        .resizable()
+                                        .scaledToFill()
                                 }
                                 .frame(width: 375 ,height: 100)
                                 .clipShape(RoundedRectangle(cornerRadius: 30))
@@ -64,13 +66,15 @@ struct MapView: View {
                             }
                             NavigationLink(destination: RouteDetails()){
                                 HStack{
-                                    Rectangle() // Here goes the image
+                                    Image("route2")
+                                        .resizable()
+                                        .scaledToFill()
                                 }
                                 .frame(width: 375 ,height: 100)
                                 .clipShape(RoundedRectangle(cornerRadius: 30))
                                 .shadow(radius: 5)
                                 .overlay{
-                                    Text("Ruta 1")
+                                    Text("Ruta 2")
                                         .foregroundStyle(.white)
                                         .bold()
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
@@ -79,13 +83,15 @@ struct MapView: View {
                             }
                             NavigationLink(destination: RouteDetails()){
                                 HStack{
-                                    Rectangle() // Here goes the image
+                                    Image("route1")
+                                        .resizable()
+                                        .scaledToFill()
                                 }
                                 .frame(width: 375 ,height: 100)
                                 .clipShape(RoundedRectangle(cornerRadius: 30))
                                 .shadow(radius: 5)
                                 .overlay{
-                                    Text("Ruta 1")
+                                    Text("Ruta 3")
                                         .foregroundStyle(.white)
                                         .bold()
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)

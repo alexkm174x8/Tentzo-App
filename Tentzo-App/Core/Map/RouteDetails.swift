@@ -3,7 +3,6 @@ import SwiftUI
 struct RouteDetails: View {
         var body: some View {
             ZStack {
-
                 ZStack(alignment: .top) {
                     Image("ruta") // Imagen de la ruta; filename: "ruta"
                         .resizable()
@@ -34,7 +33,6 @@ struct RouteDetails: View {
                             .overlay(
                                 
                                 VStack(alignment: .leading, spacing: 20) {
-
                                     HStack {
                                         VStack(alignment: .leading) {
                                             Text("Distancia:")

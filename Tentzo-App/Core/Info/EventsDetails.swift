@@ -85,7 +85,7 @@ struct EventsDetails: View {
                 }
             }
             .ignoresSafeArea(edges: .bottom)
-            .toolbar(.hidden, for: .automatic)
+            .toolbar(.hidden, for: .tabBar)
         }
     }
 }
