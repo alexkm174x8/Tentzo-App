@@ -40,6 +40,7 @@ struct ContentView: View {
                     Text("Info")
                 }
         }
+        .accentColor(.green)
     }
 }
 
