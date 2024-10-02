@@ -26,7 +26,7 @@ struct Profile: View {
                     HStack{
                         Image("pp")
                             .scaledToFit()
-                            .frame(width: 100, height: 100)
+                            .frame(width: 130)
                             .clipShape(Circle())
                             .padding(.leading, 20)
                         Spacer()
@@ -54,7 +54,7 @@ struct Profile: View {
                             Text("Mis puntos: 114")
                                 .foregroundStyle(.white)
                         }
-                        .padding(10)
+                        .padding(30)
                     }
                     .padding()
                 

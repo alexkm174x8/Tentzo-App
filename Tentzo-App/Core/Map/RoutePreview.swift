@@ -7,7 +7,7 @@ struct RoutePreview: View {
             HStack{
                 Rectangle() // Here goes the image
             }
-            .frame(width: 375 ,height: 100)
+            .frame(width: 375 ,height: 105)
             .clipShape(RoundedRectangle(cornerRadius: 30))
             .shadow(radius: 5)
             .overlay{

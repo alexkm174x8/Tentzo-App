@@ -29,7 +29,7 @@ struct RouteDetails: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 30)
                             .fill(Color.white)
-                            .frame(width: 394, height: 500)
+                            .frame(width: 405, height: 500)
                             .overlay(
                                 
                                 VStack(alignment: .leading, spacing: 20) {
