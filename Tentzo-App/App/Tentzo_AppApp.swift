@@ -10,7 +10,7 @@ import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
-        didFinishLaunchWithOptions launchOptions:
+                     didFinishLaunchingWithOptions launchOptions:
                      [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         return true
