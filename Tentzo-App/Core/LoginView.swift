@@ -6,39 +6,42 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showPassword: Bool = false
-    @Binding var isLoggedIn: Bool
-
+    @AppStorage("uid") var userID: String = ""
+    @Binding var currentShowingView: String 
     let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
-
+    
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
-
                 Text("Vive el Tentzo")
                     .font(.title2)
                     .foregroundColor(customGreen)
                     .padding(.bottom, 10)
-
+                
                 Text("Iniciar Sesión")
                     .font(.system(size: 45))
                     .padding(.bottom, 5)
-
+                
                 HStack {
                     Text("¿No tienes cuenta?")
                         .foregroundColor(.gray)
-
-                    NavigationLink(destination: SignupView()) {
+                    Button(action: {
+                        withAnimation {
+                            currentShowingView = "signup"
+                        }
+                    }) {
                         Text("Regístrate")
                             .foregroundColor(customGreen)
                     }
                 }
-
+                
                 TextField("Correo", text: $email)
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
@@ -47,10 +50,10 @@ struct LoginView: View {
                     .cornerRadius(8)
                     .padding(.horizontal, 25)
                     .padding(.top, 20)
-                    .onChange(of: email) { newValue, _ in
+                    .onChange(of: email) { newValue in
                         email = newValue.lowercased()
                     }
-
+                
                 HStack {
                     if showPassword {
                         TextField("Contraseña", text: $password)
@@ -59,7 +62,6 @@ struct LoginView: View {
                         SecureField("Contraseña", text: $password)
                             .autocapitalization(.none)
                     }
-
                     Button(action: {
                         showPassword.toggle()
                     }) {
@@ -72,20 +74,15 @@ struct LoginView: View {
                 .cornerRadius(8)
                 .padding(.horizontal, 25)
                 .padding(.top, 10)
-
+                
                 Button(action: {
-                }) {
-                    Text("¿Olvidaste tu contraseña?")
-                        .foregroundColor(.gray)
-                }
-                .padding(.top, 5)
-
-                Button(action: {
-                    // Verifica las credenciales
-                    if email == "prueba@gmail.com" && password == "123" {
-                        isLoggedIn = true
-                    } else {
-                        print("Credenciales incorrectas")
+                    Auth.auth().signIn(withEmail: email, password: password) { authResult, error in // Autenticacion del usuario
+                        if let error = error {
+                            print("Error al iniciar sesión: \(error.localizedDescription)")
+                        } else if let authResult = authResult {
+                            userID = authResult.user.uid
+                            print("Inicio de sesión exitoso, UID: \(authResult.user.uid)")
+                        }
                     }
                 }) {
                     Text("Iniciar Sesión")
@@ -99,12 +96,12 @@ struct LoginView: View {
                         .font(.system(size: 20))
                 }
                 .padding(.top, 20)
-
+                
                 Spacer()
                 Text("Acceso rápido con:")
                     .foregroundColor(.gray)
                     .padding(.bottom, 10)
-
+                
                 Button(action: {
                 }) {
                     Image("google")
@@ -112,7 +109,6 @@ struct LoginView: View {
                         .frame(width: 40, height: 40)
                 }
                 .padding(.bottom, 80)
-
             }
             .padding(.top, 40)
         }
@@ -121,6 +117,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(isLoggedIn: .constant(false))
+        LoginView(currentShowingView: .constant("login"))
     }
 }

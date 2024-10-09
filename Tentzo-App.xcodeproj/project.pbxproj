@@ -34,7 +34,8 @@
 		79B8A90E2CB5B7CF0096A824 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A90D2CB5B7CF0096A824 /* FirebaseStorage */; };
 		79B8A9102CB5B7CF0096A824 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A90F2CB5B7CF0096A824 /* FirebaseStorageCombine-Community */; };
 		79B8A9122CB5B7CF0096A824 /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A9112CB5B7CF0096A824 /* FirebaseVertexAI-Preview */; };
-		79B8A9142CB5B8180096A824 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B8A9132CB5B8180096A824 /* GoogleService-Info.plist */; };
+		79B8A9712CB632130096A824 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79B8A9702CB632120096A824 /* GoogleService-Info.plist */; };
+		79B8A9732CB638170096A824 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B8A9722CB638170096A824 /* AuthView.swift */; };
 		833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */; };
 		833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C902A2C7E559F00A24C0A /* ContentView.swift */; };
 		833C902D2C7E55A100A24C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 833C902C2C7E55A100A24C0A /* Assets.xcassets */; };
@@ -60,7 +61,8 @@
 		7904BD032CA8DE0A0098F9CE /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		7904BD052CA8DE3D0098F9CE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7904BD072CA8DE4F0098F9CE /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
-		79B8A9132CB5B8180096A824 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Example_HelloWorld/rosa/FirebaseAuthDemo/FirebaseAuthDemo/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		79B8A9702CB632120096A824 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		79B8A9722CB638170096A824 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		833C90252C7E559F00A24C0A /* Tentzo-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tentzo-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tentzo_AppApp.swift; sourceTree = "<group>"; };
 		833C902A2C7E559F00A24C0A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -145,8 +147,9 @@
 				833C90372C7E55CD00A24C0A /* Models */,
 				833C90362C7E55B100A24C0A /* Utils */,
 				833C902A2C7E559F00A24C0A /* ContentView.swift */,
+				79B8A9722CB638170096A824 /* AuthView.swift */,
 				833C902C2C7E55A100A24C0A /* Assets.xcassets */,
-				79B8A9132CB5B8180096A824 /* GoogleService-Info.plist */,
+				79B8A9702CB632120096A824 /* GoogleService-Info.plist */,
 				833C902E2C7E55A100A24C0A /* Preview Content */,
 			);
 			path = "Tentzo-App";
@@ -343,7 +346,7 @@
 			files = (
 				833C90302C7E55A100A24C0A /* Preview Assets.xcassets in Resources */,
 				833C902D2C7E55A100A24C0A /* Assets.xcassets in Resources */,
-				79B8A9142CB5B8180096A824 /* GoogleService-Info.plist in Resources */,
+				79B8A9712CB632130096A824 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +371,7 @@
 				83A2DC162C823B18001588C0 /* Profile.swift in Sources */,
 				833C90422C7E57DE00A24C0A /* MenuView.swift in Sources */,
 				83B6A1B72C922DDB001489F7 /* RoutePreview.swift in Sources */,
+				79B8A9732CB638170096A824 /* AuthView.swift in Sources */,
 				833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */,
 				834EB9F82CA47C5A00B204AC /* EventsDetails.swift in Sources */,
 				7904BD082CA8DE4F0098F9CE /* SignupView.swift in Sources */,

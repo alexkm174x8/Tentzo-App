@@ -6,41 +6,48 @@
 //
 
 import SwiftUI
-import UIKit
+import FirebaseAuth
 
 struct ContentView: View {
+    
+    @AppStorage("uid") var userID: String = ""
+    
     var body: some View {
-        TabView{
-            MenuView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
-            LibraryView()
-                .tabItem {
-                    Image(systemName: "leaf.fill")
-                    Text("Library")
-                }
-            
-            CameraView()
-                .tabItem {
-                    Image(systemName: "camera")
-                    Text("Camera")
-                }
-            
-            MapView()
-                .tabItem {
-                    Image(systemName: "map")
-                    Text("Map")
-                }
-            
-            InfoView()
-                .tabItem {
-                    Image(systemName: "person")
-                    Text("Info")
-                }
+        if userID == "" {
+            AuthView() // si no hay sesion iniciada se abre la AuthView que es el signin
+        } else {
+            TabView {
+                MenuView()
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Home")
+                    }
+                LibraryView()
+                    .tabItem {
+                        Image(systemName: "leaf.fill")
+                        Text("Library")
+                    }
+                
+                CameraView()
+                    .tabItem {
+                        Image(systemName: "camera")
+                        Text("Camera")
+                    }
+                
+                MapView()
+                    .tabItem {
+                        Image(systemName: "map")
+                        Text("Map")
+                    }
+                
+                Profile()
+                    .tabItem {
+                        Image(systemName: "person")
+                        Text("Info")
+                    }
+            }
+            .accentColor(.green)
         }
-        .accentColor(.green)
     }
 }
 
