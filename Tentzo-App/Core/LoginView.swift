@@ -39,6 +39,7 @@ struct LoginView: View {
                     }) {
                         Text("Regístrate")
                             .foregroundColor(customGreen)
+                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     }
                 }
                 

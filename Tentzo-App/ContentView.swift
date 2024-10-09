@@ -40,9 +40,9 @@ struct ContentView: View {
                         Text("Map")
                     }
                 
-                Profile()
+                InfoView()
                     .tabItem {
-                        Image(systemName: "person")
+                        Image(systemName: "info.circle")
                         Text("Info")
                     }
             }
