@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthView: View {
-    @State private var currentViewShowing: String = "signup" // Lo que se muestra primero, login o signup
+    @State private var currentViewShowing: String = "login" // Lo que se muestra primero, login o signup
         
     var body: some View {
         

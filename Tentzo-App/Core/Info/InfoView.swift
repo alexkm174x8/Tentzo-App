@@ -15,37 +15,44 @@ struct InfoView: View {
                 }
                 .padding()
             HStack(spacing: 27){
+                Link(destination: URL(string: "https://www.facebook.com/ocoyucanvidayconservacion")!) {
+                    RoundedRectangle(cornerRadius: 30)
+                        .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
+                        .overlay {
+                            Image("fb_logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 70)
+                            
+                        }
+                }
                 
-                RoundedRectangle(cornerRadius: 30)
-                    .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
-                    .frame(width: 100, height: 100)
-                    .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
-                    .overlay {
-                        Image("fb_logo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 70)
-                    }
-                RoundedRectangle(cornerRadius: 30)
-                    .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
-                    .frame(width: 100, height: 100)
-                    .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
-                    .overlay {
-                        Image("instagram_logo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 70)
-                    }
-                RoundedRectangle(cornerRadius: 30)
-                    .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
-                    .frame(width: 100, height: 100)
-                    .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
-                    .overlay {
-                        Image("x_logo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 100)
-                    }
+                Link(destination: URL(string: "https://www.instagram.com/ocoyucanvidayconservacion/")!) {
+                    RoundedRectangle(cornerRadius: 30)
+                        .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
+                        .overlay {
+                            Image("instagram_logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 70)
+                        }
+                }
+                Link(destination: URL(string: "https://x.com/OcoyucanVYCAC")!) {
+                    RoundedRectangle(cornerRadius: 30)
+                        .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
+                        .overlay {
+                            Image("x_logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100)
+                        }
+                }
             }
             .padding()
             
