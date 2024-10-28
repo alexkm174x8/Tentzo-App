@@ -4,12 +4,12 @@ struct EmergencyButton: View {
     var body: some View {
         HStack {
             Button("Emergencias") {
-                if let url = URL(string: "tel:911") {
+                if let url = URL(string: "tel://911"), UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)
                 }
             }
             .frame(width: 300, height: 50)
-            .foregroundColor(.white) // Change to foregroundColor for SwiftUI
+            .foregroundColor(.white)
             .font(.title)
             .background(Color(red: 83/255, green: 135/255, blue: 87/255))
             .cornerRadius(30)
