@@ -1,5 +1,7 @@
 import SwiftUI
 import UIKit
+import Firebase
+
 
 struct LibraryView: View {
     let columns = [
