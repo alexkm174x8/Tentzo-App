@@ -1,9 +1,16 @@
 import SwiftUI
 
 struct EventsDetails: View {
+    var nombre: String
+    var costo: String
+    var detalles: String
+    var fecha: String
+    var imagen: String
+    var tipo: String
+    
     var body: some View {
         ZStack {
-                Image("pintura") // Imagen de la ruta; filename: "pintura"
+                Image(imagen) // Imagen de la ruta; filename: "pintura"
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -18,11 +25,11 @@ struct EventsDetails: View {
                             
                             VStack(alignment: .leading, spacing: 20) {
                                 VStack(alignment: .leading) {
-                                    Text("Arte y cultura")
+                                    Text(tipo)
                                         .font(.system(size: 20))
                                         .foregroundColor(Color(red: 127/255, green: 194/255, blue: 151/255))
                                     
-                                    Text("Cenas con arte")
+                                    Text(nombre)
                                         .font(.system(size: 30))
                                         .fontWeight(.semibold)
                                         .foregroundColor(.black)
@@ -37,7 +44,7 @@ struct EventsDetails: View {
                                             .foregroundColor(.black)
                                             .padding(.leading, 5)
                                         
-                                        Text("Para los amantes del arte es maravilloso poder conocer las obras del artista y poder ir descubriendo poco a poco sus estilos favoritos. ¿Te imaginas tener el tiempo para disfrutar de sus obras con calma, entre amigos y con una deliciosa cena?")
+                                        Text(detalles)
                                             .font(.system(size: 18))
                                             .foregroundColor(.black)
                                             .multilineTextAlignment(.leading)
@@ -53,7 +60,7 @@ struct EventsDetails: View {
                                                     .foregroundColor(.black)
                                                     .padding(.leading, 5)
                                                 
-                                                Text("24 de agosto 2024")
+                                                Text(fecha)
                                                     .font(.system(size: 18))
                                                     .foregroundColor(.black)
                                                     .padding(.leading, 5)
@@ -67,7 +74,7 @@ struct EventsDetails: View {
                                                     .padding(.top, 20)
                                                     .padding(.leading, 80)
 
-                                                Text("$450 por persona")
+                                                Text("\(costo) por persona")
                                                     .font(.system(size: 18))
                                                     .foregroundColor(.black)
                                                     .padding(.leading, 80)
@@ -91,5 +98,5 @@ struct EventsDetails: View {
 }
 
 #Preview {
-    EventsDetails()
+    EventsDetails(nombre: "Cenas con arte", costo: "500", detalles: "estoy locoooooooooooooooooooooooooo", fecha: "cuando sea", imagen: "activity1", tipo: "Arte y Cultura")
 }

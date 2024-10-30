@@ -23,7 +23,7 @@ struct PlantInfo: View {
                     }
                 }
 
-            Text("Actividad")
+            Text("Plant")
                 .foregroundStyle(Color.black)
         }
         .onAppear {

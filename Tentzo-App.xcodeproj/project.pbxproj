@@ -55,6 +55,7 @@
 		83B6A1B72C922DDB001489F7 /* RoutePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6A1B62C922DDB001489F7 /* RoutePreview.swift */; };
 		83BAFBF42C934ACD0010D0E4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BAFBF32C934ACD0010D0E4 /* MapView.swift */; };
 		83BAFBF62C937B100010D0E4 /* PlantDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BAFBF52C937B100010D0E4 /* PlantDetails.swift */; };
+		83FD71DF2CD2B5A300AE3059 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FD71DE2CD2B5A300AE3059 /* ActivityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		83B6A1B62C922DDB001489F7 /* RoutePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePreview.swift; sourceTree = "<group>"; };
 		83BAFBF32C934ACD0010D0E4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		83BAFBF52C937B100010D0E4 /* PlantDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDetails.swift; sourceTree = "<group>"; };
+		83FD71DE2CD2B5A300AE3059 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 			children = (
 				837C33AD2C8786E40091AF7D /* InfoView.swift */,
 				834EB9F72CA47C5A00B204AC /* EventsDetails.swift */,
+				83FD71DE2CD2B5A300AE3059 /* ActivityView.swift */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 				83890D5B2C8B7554002535F1 /* PlantInfo.swift in Sources */,
 				837C33A82C8786C40091AF7D /* LibraryView.swift in Sources */,
 				7904BD062CA8DE3D0098F9CE /* LoginView.swift in Sources */,
+				83FD71DF2CD2B5A300AE3059 /* ActivityView.swift in Sources */,
 				83A2DC162C823B18001588C0 /* Profile.swift in Sources */,
 				833C90422C7E57DE00A24C0A /* MenuView.swift in Sources */,
 				83B6A1B72C922DDB001489F7 /* RoutePreview.swift in Sources */,
