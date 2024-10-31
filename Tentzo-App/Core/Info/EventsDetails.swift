@@ -10,10 +10,7 @@ struct EventsDetails: View {
     
     var body: some View {
         ZStack {
-                Image(imagen) // Imagen de la ruta; filename: "pintura"
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
+            AsyncImageView(url: imagen) // Imagen de la ruta; filename: "pintura"
             VStack {
                 Spacer()
                 
@@ -96,6 +93,7 @@ struct EventsDetails: View {
         }
     }
 }
+
 
 #Preview {
     EventsDetails(nombre: "Cenas con arte", costo: "500", detalles: "estoy locoooooooooooooooooooooooooo", fecha: "cuando sea", imagen: "activity1", tipo: "Arte y Cultura")

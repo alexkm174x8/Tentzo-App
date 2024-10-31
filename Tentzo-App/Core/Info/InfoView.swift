@@ -6,7 +6,7 @@ struct InfoView: View {
     @StateObject private var viewModel = ActividadViewModel()
 
     struct Actividad: Identifiable {
-        var id: String // Usar String para el ID
+        var id: String
         let nombre: String
         let detalles: String
         let costo: String
@@ -22,7 +22,7 @@ struct InfoView: View {
                     Text("Redes Sociales")
                         .bold()
                         .font(.system(size: 20))
-                    VStack{
+                    VStack {
                         Divider()
                     }
                 }
@@ -46,28 +46,31 @@ struct InfoView: View {
                     .font(.system(size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-
-                if let actividad = viewModel.actividades.first {
-                    NavigationLink(destination: EventsDetails(
-                        nombre: actividad.nombre,
-                        costo: actividad.costo,
-                        detalles: actividad.detalles,
-                        fecha: actividad.fecha,
-                        imagen: actividad.imagen,
-                        tipo: actividad.tipo
-                    )) {
-                        ActivityPreview(nombre: actividad.nombre)
+                ScrollView {
+                    if viewModel.actividades.isEmpty {
+                        Text("Cargando actividades...")
+                            .foregroundColor(.gray)
+                        Spacer()
+                    } else {
+                        ForEach(viewModel.actividades) { actividad in
+                            NavigationLink(destination: EventsDetails(
+                                nombre: actividad.nombre,
+                                costo: actividad.costo,
+                                detalles: actividad.detalles,
+                                fecha: actividad.fecha,
+                                imagen: actividad.imagen,
+                                tipo: actividad.tipo
+                            )) {
+                                ActivityPreview(nombre: actividad.nombre, image: actividad.imagen)
+                            }
+                        }
                     }
-                } else {
-                    Text("Cargando actividad...")
-                        .foregroundColor(.gray)
-                    Spacer()
                 }
 
                 Spacer()
             }
             .onAppear {
-                viewModel.cargarProductosDesdeFirestore() // Cargar datos al aparecer la vista
+                viewModel.cargarProductosDesdeFirestore()
             }
         }
     }
@@ -103,14 +106,12 @@ class ActividadViewModel: ObservableObject {
                 return
             }
             
-            // Limpiar el array antes de agregar nuevos productos
             self.actividades.removeAll()
             
             for documento in documentos {
                 let data = documento.data()
-                print("Documento: \(documento.documentID) -> \(data)") // Imprime el documento completo
+                print("Documento: \(documento.documentID) -> \(data)")
                 
-                // Crear una actividad solo si todos los datos están presentes
                 if let nombre = data["nombre"] as? String,
                    let detalles = data["detalles"] as? String,
                    let costo = data["costo"] as? String,
@@ -131,17 +132,9 @@ class ActividadViewModel: ObservableObject {
                     self.actividades.append(nuevaActividad)
                 } else {
                     print("Datos faltantes en el documento \(documento.documentID)")
-                    // Imprime qué campos están faltando
-                    if data["nombre"] == nil { print("Falta 'nombre'") }
-                    if data["detalles"] == nil { print("Falta 'detalles'") }
-                    if data["costo"] == nil { print("Falta 'costo'") }
-                    if data["fecha"] == nil { print("Falta 'fecha'") }
-                    if data["tipo"] == nil { print("Falta 'tipo'") }
-                    if data["imagen"] == nil { print("Falta 'imagen'") }
                 }
             }
             
-            // Verificar el contenido del array después de cargar
             print("Actividades cargadas: \(self.actividades)")
         }
     }
