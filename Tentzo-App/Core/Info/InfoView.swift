@@ -97,12 +97,10 @@ class ActividadViewModel: ObservableObject {
         
         db.collection("Actividad").getDocuments { (querySnapshot, error) in
             if let error = error {
-                print("Error al recuperar productos: \(error.localizedDescription)")
                 return
             }
             
             guard let documentos = querySnapshot?.documents else {
-                print("No se encontraron productos")
                 return
             }
             
@@ -110,7 +108,6 @@ class ActividadViewModel: ObservableObject {
             
             for documento in documentos {
                 let data = documento.data()
-                print("Documento: \(documento.documentID) -> \(data)")
                 
                 if let nombre = data["nombre"] as? String,
                    let detalles = data["detalles"] as? String,
@@ -130,12 +127,8 @@ class ActividadViewModel: ObservableObject {
                     )
                     
                     self.actividades.append(nuevaActividad)
-                } else {
-                    print("Datos faltantes en el documento \(documento.documentID)")
                 }
             }
-            
-            print("Actividades cargadas: \(self.actividades)")
         }
     }
 }

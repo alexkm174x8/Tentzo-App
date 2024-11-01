@@ -4,6 +4,8 @@ import UIKit
 
 struct PlantInfo: View {
     @State private var retrievedImage: UIImage?
+    var nomComun: String
+    var imagen: String
 
     var body: some View {
         VStack {
@@ -11,41 +13,19 @@ struct PlantInfo: View {
                 .frame(width: 100, height: 100)
                 .foregroundStyle(Color(red: 127/255, green: 194/255, blue: 151/255))
                 .overlay {
-                    if let image = retrievedImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                    } else {
-                        Image(systemName: "leaf.fill")
-                            .foregroundColor(.white)
-                            .font(.system(size: 40))
-                    }
+                    Image(imagen)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
                 }
 
             Text("Plant")
                 .foregroundStyle(Color.black)
         }
-        .onAppear {
-            retrieveImageUrl()
-        }
     }
 
-    func retrieveImageUrl() {
-        let db = Firestore.firestore()
-        
-        db.collection("Actividad").document("1").getDocument { document, error in
-            guard let document = document, document.exists,
-                  let imageUrl = document.data()?["imagen"] as? String else {
-                return
-            }
-
-            retrievePhoto(from: imageUrl)
-        }
-    }
-
-    func retrievePhoto(from imageUrl: String) {
-        guard let url = URL(string: imageUrl) else {
+    func retrievePhoto(from image: String) {
+        guard let url = URL(string: image) else {
             return
         }
 
@@ -61,6 +41,43 @@ struct PlantInfo: View {
     }
 }
 
+struct AsyncPlantView: View {
+    let url: String
+
+    @State private var imagen: Image? = nil
+    @State private var isLoading: Bool = true
+
+    var body: some View {
+        Group {
+            if let image = imagen {
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .clipped() // Ajustar el recorte
+            } else {
+                Color.gray // Placeholder mientras carga
+                    .overlay(ProgressView())
+            }
+        }
+        .onAppear {
+            loadImage()
+        }
+    }
+
+    private func loadImage() {
+        guard let url = URL(string: url) else { return }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data, let uiImage = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.imagen = Image(uiImage: uiImage)
+                }
+            }
+        }.resume()
+    }
+}
+
+
 #Preview {
-    PlantInfo()
+    PlantInfo(nomComun: "Flor", imagen: "leaf.fill")
 }

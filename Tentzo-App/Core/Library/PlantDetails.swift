@@ -1,6 +1,15 @@
 import SwiftUI
 
 struct PlantDetails: View {
+    var id: String
+    let nomComun: String
+    let nomCientifico: String
+    let familia: String
+    let genero: String
+    let sinonimo : String
+    let descripcion: String
+    let imagen: String
+    
     var body: some View {
         ZStack {
             ZStack(alignment: .top) {
@@ -94,5 +103,5 @@ struct PlantDetails: View {
 }
 
 #Preview {
-    PlantDetails()
+    PlantDetails(id: "1", nomComun: "Flor", nomCientifico: "Florencius", familia: "Florera", genero: "Floral", sinonimo: "Floriponcia", descripcion: "Es una flor", imagen: "flor")
 }
