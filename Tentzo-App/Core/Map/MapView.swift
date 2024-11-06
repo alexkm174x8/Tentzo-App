@@ -1,5 +1,7 @@
 import SwiftUI
 import MapKit
+import Firebase
+import FirebaseFirestore
 
 //For map lock
 struct MapViewRepresentable: UIViewRepresentable {
@@ -19,6 +21,19 @@ struct MapViewRepresentable: UIViewRepresentable {
 
 
 struct MapView: View {
+    @StateObject private var viewModel = RoutesViewModel()
+
+    struct Route: Identifiable {
+        var id: String
+        var id_ruta: String
+        let nombre: String
+        let distancia: String
+        let tiempo: String
+        let detalles: String
+        let imagen: String
+    }
+    
+    
     @State private var isExpanded: Bool = false
     
     var body: some View {
@@ -47,57 +62,31 @@ struct MapView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 15)
-                            NavigationLink(destination: RouteDetails()){
-                                HStack{
-                                    Image("route1")
-                                        .resizable()
-                                        .scaledToFill()
+                            
+                            if viewModel.Routes.isEmpty {
+                                Text("Cargando Rutas...")
+                                    .foregroundColor(.gray)
+                                Spacer()
+                            } else {
+                                ScrollView{
+                                    ForEach(viewModel.Routes) { Route in
+                                        NavigationLink(destination: RouteDetails(
+                                            nombre: Route.nombre,
+                                            distancia: Route.distancia,
+                                            tiempo: Route.tiempo,
+                                            detalles: Route.detalles,
+                                            imagen: Route.imagen
+                                        )) {
+                                            RoutePreview(nombre: Route.nombre, image: Route.imagen)
+                                        }
+                                    }
                                 }
-                                .frame(width: 375 ,height: 100)
-                                .clipShape(RoundedRectangle(cornerRadius: 30))
-                                .shadow(radius: 5)
-                                .overlay{
-                                    Text("Ruta 1")
-                                        .foregroundStyle(.white)
-                                        .bold()
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                                        .padding()
-                                }
+                                
                             }
-                            NavigationLink(destination: RouteDetails()){
-                                HStack{
-                                    Image("route2")
-                                        .resizable()
-                                        .scaledToFill()
-                                }
-                                .frame(width: 375 ,height: 100)
-                                .clipShape(RoundedRectangle(cornerRadius: 30))
-                                .shadow(radius: 5)
-                                .overlay{
-                                    Text("Ruta 2")
-                                        .foregroundStyle(.white)
-                                        .bold()
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                                        .padding()
-                                }
-                            }
-                            NavigationLink(destination: RouteDetails()){
-                                HStack{
-                                    Image("route1")
-                                        .resizable()
-                                        .scaledToFill()
-                                }
-                                .frame(width: 375 ,height: 100)
-                                .clipShape(RoundedRectangle(cornerRadius: 30))
-                                .shadow(radius: 5)
-                                .overlay{
-                                    Text("Ruta 3")
-                                        .foregroundStyle(.white)
-                                        .bold()
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                                        .padding()
-                                }
-                            }
+                            
+                        }
+                        .onAppear {
+                            viewModel.cargarProductosDesdeFirestore()
                         }
                         .frame(maxHeight: .infinity, alignment: .top)
                     }
@@ -126,6 +115,62 @@ struct MapView: View {
         }
     }
 }
+
+class RoutesViewModel: ObservableObject {
+    @Published var Routes: [MapView.Route] = []
+
+    func cargarProductosDesdeFirestore() {
+        let db = Firestore.firestore()
+        print("Iniciando carga de rutas desde Firestore...")
+        
+        db.collection("Ruta").getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error al cargar rutas: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let Routes = querySnapshot?.documents else {
+                print("No se encontraron documentos en Firestore")
+                return
+            }
+            
+            print("Documentos obtenidos: \(Routes.count) rutas")
+            
+            self.Routes.removeAll()
+            
+            for Route in Routes {
+                let data = Route.data()
+                print("Procesando documento: \(Route.documentID)")
+                
+                if let id = data["id"] as? String,
+                   let id_ruta = data["id_ruta"] as? String,
+                   let nombre = data["nombre"] as? String,
+                   let distancia = data["distancia"] as? String,
+                   let tiempo = data["tiempo"] as? String,
+                   let detalles = data["detalles"] as? String,
+                   let imagen = data["imagen"] as? String {
+                    
+                    print("Ruta cargada: \(nombre) - \(distancia) km, \(tiempo) minutos")
+                    
+                    let newRoute = MapView.Route(
+                        id: id,
+                        id_ruta: id_ruta,
+                        nombre: nombre,
+                        distancia: distancia,
+                        tiempo: tiempo,
+                        detalles: detalles,
+                        imagen: imagen
+                    )
+                    
+                    self.Routes.append(newRoute)
+                } else {
+                    print("Datos incompletos para la ruta \(Route.documentID), omitiendo...")
+                }
+            }
+        }
+    }
+}
+
 
 #Preview {
     MapView()

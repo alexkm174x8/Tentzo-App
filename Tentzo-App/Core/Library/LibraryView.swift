@@ -3,7 +3,7 @@ import Firebase
 
 struct LibraryView: View {
     @StateObject private var viewModel = PlantView()
-    @State private var searchText = "" // Propiedad para manejar el texto de búsqueda
+    @State private var searchText = "" 
     
     let columns = [
         GridItem(.flexible()),
@@ -36,7 +36,6 @@ struct LibraryView: View {
                         }
                         Spacer()
                     } else {
-                        // Mostrar todas las plantas si searchText está vacío, de lo contrario, filtrar
                         let filteredPlantas = searchText.isEmpty ? viewModel.plantas : viewModel.plantas.filter { planta in
                             planta.nomComun.lowercased().contains(searchText.lowercased()) ||
                             planta.nomCientifico.lowercased().contains(searchText.lowercased())
@@ -75,7 +74,6 @@ class PlantView: ObservableObject {
         
         db.collection("Planta").getDocuments { (querySnapshot, error) in
             if let error = error {
-                // Error en la carga de documentos
                 return
             }
             

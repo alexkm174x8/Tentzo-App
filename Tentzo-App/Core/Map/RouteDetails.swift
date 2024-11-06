@@ -1,20 +1,22 @@
 import SwiftUI
 
 struct RouteDetails: View {
+    var nombre: String
+    var distancia: String
+    var tiempo: String
+    var detalles: String
+    var imagen: String
+    
         var body: some View {
             ZStack {
                 ZStack(alignment: .top) {
-                    Image("ruta") // Imagen de la ruta; filename: "ruta"
-                        .resizable()
-                        .scaledToFill()
-                        .ignoresSafeArea()
-                    
+                    AsyncImageView(url: imagen)
                     HStack {
                         Image(systemName: "arrow.left")
                             .foregroundColor(.white)
                             .font(.system(size: 25))
 
-                        Text("Ruta Tentzo")
+                        Text(nombre)
                             .font(.title)
                             .bold()
                             .foregroundColor(.white)
@@ -41,7 +43,7 @@ struct RouteDetails: View {
                                                 .foregroundColor(.black)
                                                 .padding(.leading, 20)
                                             
-                                            Text("3 km")
+                                            Text(distancia)
                                                 .font(.largeTitle)
                                                 .foregroundColor(.black)
                                                 .padding(.leading, 20)
@@ -55,7 +57,7 @@ struct RouteDetails: View {
                                                 .foregroundColor(.black)
                                                 .padding(.trailing, 23)
                                             
-                                            Text("60 min")
+                                            Text(tiempo)
                                                 .font(.largeTitle)
                                                 .foregroundColor(.black)
                                                 .padding(.trailing, 23)
@@ -75,7 +77,7 @@ struct RouteDetails: View {
                                                 .padding(.leading, 5)
                                                 .padding(.trailing, 5)
                                             
-                                            Text("La Ruta Tentzo tiene una longitud de 8 kilómetros. A lo largo del recorrido, podrás disfrutar de una gran variedad de ecosistemas, desde bosques de pinos hasta áreas abiertas con praderas floridas.")
+                                            Text(detalles)
                                                 .font(.system(size: 19))
                                                 .foregroundColor(.black)
                                                 .multilineTextAlignment(.leading)
@@ -115,6 +117,5 @@ struct RouteDetails: View {
             }
         }
     }
-#Preview {
-    RouteDetails()
-}
+
+
