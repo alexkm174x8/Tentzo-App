@@ -1,9 +1,9 @@
 import SwiftUI
-import UIKit
 import Firebase
 
 struct LibraryView: View {
     @StateObject private var viewModel = PlantView()
+    @State private var searchText = "" // Propiedad para manejar el texto de búsqueda
     
     let columns = [
         GridItem(.flexible()),
@@ -24,7 +24,9 @@ struct LibraryView: View {
     
     var body: some View {
         NavigationStack {
-            SearchBar()
+            // Pasar la propiedad searchText a SearchBar
+            SearchBar(searchText: $searchText)
+            
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 30) {
                     if viewModel.plantas.isEmpty {
@@ -34,7 +36,13 @@ struct LibraryView: View {
                         }
                         Spacer()
                     } else {
-                        ForEach(viewModel.plantas) { planta in
+                        // Mostrar todas las plantas si searchText está vacío, de lo contrario, filtrar
+                        let filteredPlantas = searchText.isEmpty ? viewModel.plantas : viewModel.plantas.filter { planta in
+                            planta.nomComun.lowercased().contains(searchText.lowercased()) ||
+                            planta.nomCientifico.lowercased().contains(searchText.lowercased())
+                        }
+
+                        ForEach(filteredPlantas) { planta in
                             NavigationLink(destination: PlantDetails(
                                 id: planta.id,
                                 nomComun: planta.nomComun,
@@ -59,7 +67,6 @@ struct LibraryView: View {
     }
 }
 
-// Clase para manejar el array de plantas
 class PlantView: ObservableObject {
     @Published var plantas: [LibraryView.Planta] = []
 
@@ -68,12 +75,11 @@ class PlantView: ObservableObject {
         
         db.collection("Planta").getDocuments { (querySnapshot, error) in
             if let error = error {
-                print("Error fetching documents: \(error.localizedDescription)") // Manejo de error
+                // Error en la carga de documentos
                 return
             }
             
             guard let documentos = querySnapshot?.documents else {
-                print("No documents found")
                 return
             }
             
@@ -81,9 +87,8 @@ class PlantView: ObservableObject {
             
             for documento in documentos {
                 let data = documento.data()
-                
-                // Asegúrate de que todos los campos estén disponibles
-                if let id = data["id"] as? String,
+
+                if let id = data["id"] as? Int,
                    let nomComun = data["nomComun"] as? String,
                    let nomCientifico = data["nomCientifico"] as? String,
                    let sinonimo = data["sinonimo"] as? String,
@@ -91,9 +96,11 @@ class PlantView: ObservableObject {
                    let familia = data["familia"] as? String,
                    let descripcion = data["descripcion"] as? String,
                    let imagen = data["imagen"] as? String {
-                    
+
+                    let idString = String(id)
+
                     let nuevaPlanta = LibraryView.Planta(
-                        id: id,
+                        id: idString,
                         nomComun: nomComun,
                         nomCientifico: nomCientifico,
                         familia: familia,
@@ -104,10 +111,10 @@ class PlantView: ObservableObject {
                     )
                     
                     self.plantas.append(nuevaPlanta)
+                } else {
+                    // Si faltan campos, no se procesan
                 }
             }
-            
-            print("Plantas cargadas: \(self.plantas)") // Para depurar
         }
     }
 }

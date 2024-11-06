@@ -13,65 +13,41 @@ struct PlantInfo: View {
                 .frame(width: 100, height: 100)
                 .foregroundStyle(Color(red: 127/255, green: 194/255, blue: 151/255))
                 .overlay {
-                    Image(imagen)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40, height: 40)
+                    if let retrievedImage = retrievedImage {
+                        Image(uiImage: retrievedImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+                    } else {
+                        ProgressView()
+                    }
                 }
 
-            Text("Plant")
+            Text(nomComun)
                 .foregroundStyle(Color.black)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .font(.system(size: 16))
+        }
+        .onAppear {
+            retrievePhoto(from: imagen)
         }
     }
 
     func retrievePhoto(from image: String) {
         guard let url = URL(string: image) else {
+            print("URL no válida: \(image)")
             return
         }
 
+        // Cargar la imagen de forma asincrónica
         URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, let image = UIImage(data: data) else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                retrievedImage = image
-            }
-        }.resume()
-    }
-}
-
-struct AsyncPlantView: View {
-    let url: String
-
-    @State private var imagen: Image? = nil
-    @State private var isLoading: Bool = true
-
-    var body: some View {
-        Group {
-            if let image = imagen {
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .clipped() // Ajustar el recorte
-            } else {
-                Color.gray // Placeholder mientras carga
-                    .overlay(ProgressView())
-            }
-        }
-        .onAppear {
-            loadImage()
-        }
-    }
-
-    private func loadImage() {
-        guard let url = URL(string: url) else { return }
-
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data, let uiImage = UIImage(data: data) {
+            if let data = data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    self.imagen = Image(uiImage: uiImage)
+                    retrievedImage = image
                 }
+            } else {
+                print("Error al cargar la imagen: \(error?.localizedDescription ?? "Desconocido")")
             }
         }.resume()
     }

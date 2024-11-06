@@ -2,12 +2,14 @@ import SwiftUI
 import UIKit
 
 struct SearchBar: View {
+    @Binding var searchText: String
+    
     var body: some View {
-        HStack(){
+        HStack {
             Image(systemName: "magnifyingglass")
             
-            VStack(alignment: .trailing, spacing: 2){
-                TextField("Busca una planta", text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/.constant("")/*@END_MENU_TOKEN@*/)
+            VStack(alignment: .trailing, spacing: 2) {
+                TextField("Busca una planta", text: $searchText)
                     .font(.caption2)
                     .foregroundStyle(.gray)
             }
@@ -23,8 +25,4 @@ struct SearchBar: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    SearchBar()
 }
