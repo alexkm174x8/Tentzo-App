@@ -3,14 +3,14 @@ import MapKit
 import Firebase
 import FirebaseFirestore
 
-//For map lock
+// For map lock
 struct MapViewRepresentable: UIViewRepresentable {
     var isInteractionDisabled: Bool
-
+    
     func makeUIView(context: Context) -> MKMapView {
         MKMapView()
     }
-
+    
     func updateUIView(_ uiView: MKMapView, context: Context) {
         uiView.isScrollEnabled = !isInteractionDisabled
         uiView.isZoomEnabled = !isInteractionDisabled
@@ -19,10 +19,54 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
 }
 
+struct MapViewHeader: View {
+    var body: some View {
+        VStack {
+            HStack {
+                RoundedRectangle(cornerRadius: 25.0)
+                    .frame(width: 35, height: 5)
+                    .foregroundStyle(Color(.lightGray))
+                    .padding(.top, 10)
+                    .opacity(0.3)
+            }
+            
+            HStack(alignment: .top) {
+                Image(systemName: "map.fill")
+                    .foregroundStyle(.green)
+                Text("Rutas")
+                    .font(.headline)
+                    .foregroundStyle(.green)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading, 15)
+        }
+    }
+}
+
+struct RoutesListView: View {
+    var routes: [MapView.Route]
+    
+    var body: some View {
+        ScrollView {
+            ForEach(routes) { route in
+                NavigationLink(destination: RouteDetails(
+                    nombre: route.nombre,
+                        distancia: route.distancia,
+                        tiempo: route.tiempo,
+                        detalles: route.detalles,
+                        imagen: route.imagen,
+                        id_ruta: Int(route.id_ruta) ?? 0
+                )) {
+                    RoutePreview(nombre: route.nombre, image: route.imagen)
+                }
+            }
+        }
+    }
+}
 
 struct MapView: View {
     @StateObject private var viewModel = RoutesViewModel()
-
+    
     struct Route: Identifiable {
         var id: String
         var id_ruta: String
@@ -33,63 +77,30 @@ struct MapView: View {
         let imagen: String
     }
     
-    
     @State private var isExpanded: Bool = false
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack {
                 ZStack(alignment: .bottom) {
                     MapViewRepresentable(isInteractionDisabled: isExpanded)
                         .ignoresSafeArea(.container, edges: .top)
                     
                     VStack {
-                        VStack {
-                            HStack {
-                                RoundedRectangle(cornerRadius: 25.0)
-                                    .frame(width: 35, height: 5)
-                                    .foregroundStyle(Color(.lightGray))
-                                    .padding(.top, 10)
-                                    .opacity(0.3)
-                            }
-                            
-                            HStack(alignment: .top) {
-                                Image(systemName: "map.fill")
-                                    .foregroundStyle(.green)
-                                Text("Rutas")
-                                    .font(.headline)
-                                    .foregroundStyle(.green)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 15)
-                            
-                            if viewModel.Routes.isEmpty {
-                                Text("Cargando Rutas...")
-                                    .foregroundColor(.gray)
-                                Spacer()
-                            } else {
-                                ScrollView{
-                                    ForEach(viewModel.Routes) { Route in
-                                        NavigationLink(destination: RouteDetails(
-                                            nombre: Route.nombre,
-                                            distancia: Route.distancia,
-                                            tiempo: Route.tiempo,
-                                            detalles: Route.detalles,
-                                            imagen: Route.imagen
-                                        )) {
-                                            RoutePreview(nombre: Route.nombre, image: Route.imagen)
-                                        }
-                                    }
-                                }
-                                
-                            }
-                            
+                        MapViewHeader()
+                        
+                        if viewModel.Routes.isEmpty {
+                            Text("Cargando Rutas...")
+                                .foregroundColor(.gray)
+                            Spacer()
+                        } else {
+                            RoutesListView(routes: viewModel.Routes)
                         }
-                        .onAppear {
-                            viewModel.cargarProductosDesdeFirestore()
-                        }
-                        .frame(maxHeight: .infinity, alignment: .top)
                     }
+                    .onAppear {
+                        viewModel.cargarProductosDesdeFirestore()
+                    }
+                    .frame(maxHeight: .infinity, alignment: .top)
                     .frame(height: isExpanded ? 700 : 152, alignment: .top)
                     .background(.white)
                     .clipShape(RoundedCorner(radius: 25.0, corners: [.topLeft, .topRight]))
@@ -97,17 +108,17 @@ struct MapView: View {
                     .transition(.move(edge: .bottom))
                     .gesture(
                         DragGesture()
-                        .onEnded { value in
-                            if value.translation.height < 50 {
-                                withAnimation {
-                                    isExpanded = true
-                                }
-                            } else if value.translation.height > 30 {
-                                withAnimation {
-                                    isExpanded = false
+                            .onEnded { value in
+                                if value.translation.height < 50 {
+                                    withAnimation {
+                                        isExpanded = true
+                                    }
+                                } else if value.translation.height > 30 {
+                                    withAnimation {
+                                        isExpanded = false
+                                    }
                                 }
                             }
-                        }
                     )
                 }
                 Spacer()
@@ -118,7 +129,7 @@ struct MapView: View {
 
 class RoutesViewModel: ObservableObject {
     @Published var Routes: [MapView.Route] = []
-
+    
     func cargarProductosDesdeFirestore() {
         let db = Firestore.firestore()
         print("Iniciando carga de rutas desde Firestore...")
@@ -129,30 +140,34 @@ class RoutesViewModel: ObservableObject {
                 return
             }
             
-            guard let Routes = querySnapshot?.documents else {
+            guard let routeDocuments = querySnapshot?.documents else {
                 print("No se encontraron documentos en Firestore")
                 return
             }
             
-            print("Documentos obtenidos: \(Routes.count) rutas")
+            print("Documentos obtenidos: \(routeDocuments.count) rutas")
             
-            self.Routes.removeAll()
-            
-            for Route in Routes {
-                let data = Route.data()
-                print("Procesando documento: \(Route.documentID)")
-                
-                if let id = data["id"] as? String,
-                   let id_ruta = data["id_ruta"] as? String,
-                   let nombre = data["nombre"] as? String,
-                   let distancia = data["distancia"] as? String,
-                   let tiempo = data["tiempo"] as? String,
-                   let detalles = data["detalles"] as? String,
-                   let imagen = data["imagen"] as? String {
+            DispatchQueue.main.async {
+                self.Routes = routeDocuments.compactMap { doc -> MapView.Route? in
+                    let data = doc.data()
+                    print("Procesando documento: \(doc.documentID)")
+                    
+                    guard
+                        let id = data["id"] as? String,
+                        let id_ruta = data["id_ruta"] as? String,
+                        let nombre = data["nombre"] as? String,
+                        let distancia = data["distancia"] as? String,
+                        let tiempo = data["tiempo"] as? String,
+                        let detalles = data["detalles"] as? String,
+                        let imagen = data["imagen"] as? String
+                    else {
+                        print("Datos incompletos para la ruta \(doc.documentID), omitiendo...")
+                        return nil
+                    }
                     
                     print("Ruta cargada: \(nombre) - \(distancia) km, \(tiempo) minutos")
                     
-                    let newRoute = MapView.Route(
+                    return MapView.Route(
                         id: id,
                         id_ruta: id_ruta,
                         nombre: nombre,
@@ -161,17 +176,13 @@ class RoutesViewModel: ObservableObject {
                         detalles: detalles,
                         imagen: imagen
                     )
-                    
-                    self.Routes.append(newRoute)
-                } else {
-                    print("Datos incompletos para la ruta \(Route.documentID), omitiendo...")
                 }
             }
         }
     }
 }
 
-
 #Preview {
     MapView()
 }
+
