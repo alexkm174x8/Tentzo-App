@@ -5,7 +5,7 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showPassword: Bool = false
-    @State private var isLoading: Bool = false // Estado para controlar el loading
+    @State private var isLoading: Bool = false
     @AppStorage("uid") var userID: String = ""
     @Binding var currentShowingView: String
     let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
@@ -76,17 +76,6 @@ struct LoginView: View {
                         .padding()
                 } else {
                     Button(action: {
-                        isLoading = true // Inicia el loading
-                        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-                            isLoading = false // Detiene el loading
-                            if let error = error {
-                                print("Error al iniciar sesión: \(error.localizedDescription)")
-                            } else if let authResult = authResult {
-                                userID = authResult.user.uid
-                                print("Inicio de sesión exitoso, UID: \(authResult.user.uid)")
-                                // Aquí puedes navegar a otra vista si es necesario
-                            }
-                        }
                     }) {
                         Text("Iniciar Sesión")
                             .fontWeight(.bold)
@@ -100,7 +89,7 @@ struct LoginView: View {
                     }
                     .padding(.top, 20)
                 }
-
+                
                 Spacer()
                 Text("Acceso rápido con:")
                     .foregroundColor(.gray)
@@ -118,10 +107,10 @@ struct LoginView: View {
             .padding(.top, 40)
         }
     }
-}
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView(currentShowingView: .constant("login"))
+    
+    struct LoginView_Previews: PreviewProvider {
+        static var previews: some View {
+            LoginView(currentShowingView: .constant("login"))
+        }
     }
 }

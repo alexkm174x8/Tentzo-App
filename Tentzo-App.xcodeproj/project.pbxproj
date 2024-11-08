@@ -14,6 +14,7 @@
 		795826E12CDD085500B9897F /* RouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E02CDD084E00B9897F /* RouteViewModel.swift */; };
 		795826E52CDD0B8500B9897F /* MapViewForRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E42CDD0B7D00B9897F /* MapViewForRoute.swift */; };
 		795826E72CDD0BC000B9897F /* MapViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E62CDD0BB600B9897F /* MapViewContainer.swift */; };
+		795826E92CDD815000B9897F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E82CDD814800B9897F /* UserService.swift */; };
 		79B8A8E42CB5B7CF0096A824 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A8E32CB5B7CF0096A824 /* FirebaseAnalytics */; };
 		79B8A8E62CB5B7CF0096A824 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A8E52CB5B7CF0096A824 /* FirebaseAnalyticsOnDeviceConversion */; };
 		79B8A8E82CB5B7CF0096A824 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A8E72CB5B7CF0096A824 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -70,6 +71,7 @@
 		795826E02CDD084E00B9897F /* RouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewModel.swift; sourceTree = "<group>"; };
 		795826E42CDD0B7D00B9897F /* MapViewForRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewForRoute.swift; sourceTree = "<group>"; };
 		795826E62CDD0BB600B9897F /* MapViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewContainer.swift; sourceTree = "<group>"; };
+		795826E82CDD814800B9897F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		79B8A9722CB638170096A824 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		833C90252C7E559F00A24C0A /* Tentzo-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tentzo-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tentzo_AppApp.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				7904BD032CA8DE0A0098F9CE /* SplashScreenView.swift */,
 				7904BD072CA8DE4F0098F9CE /* SignupView.swift */,
 				7904BD052CA8DE3D0098F9CE /* LoginView.swift */,
+				795826E82CDD814800B9897F /* UserService.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 			files = (
 				837C33B02C878DFB0091AF7D /* SearchBar.swift in Sources */,
 				83BAFBF42C934ACD0010D0E4 /* MapView.swift in Sources */,
+				795826E92CDD815000B9897F /* UserService.swift in Sources */,
 				8353A3F42CA47A9100C3844F /* RouteDetails.swift in Sources */,
 				83A2DC1C2C82462B001588C0 /* Badges.swift in Sources */,
 				795826DF2CDD082400B9897F /* Coordinate.swift in Sources */,

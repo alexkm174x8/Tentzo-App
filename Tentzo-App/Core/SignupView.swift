@@ -17,6 +17,9 @@ struct SignupView: View {
     @Binding var currentShowingView: String
     let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
     
+    // UserService instance to handle Firestore document creation
+    private let userService = UserService()
+    
     var body: some View {
         VStack {
             Spacer()
@@ -67,21 +70,7 @@ struct SignupView: View {
                 .foregroundColor(.black)
             
             Button(action: {
-                if password == confirmPassword {
-                    Auth.auth().createUser(withEmail: email, password: password) { authResult, error in // Autenticacion con Firebase
-                        if let error = error {
-                            print("Error al crear la cuenta: \(error.localizedDescription)")
-                        } else if let authResult = authResult {
-                            userID = authResult.user.uid // Guarda el UID del user
-                            print("Cuenta creada exitosamente, UID: \(authResult.user.uid)")
-                            withAnimation {
-                                currentShowingView = "login"
-                            }
-                        }
-                    }
-                } else {
-                    print("Las contraseñas no coinciden.")
-                }
+                signUpUser()
             }) {
                 Text("Registrarse")
                     .fontWeight(.bold)
@@ -131,6 +120,32 @@ struct SignupView: View {
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
         .preferredColorScheme(.light)
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func signUpUser() {
+        guard password == confirmPassword else {
+            print("Las contraseñas no coinciden.")
+            return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Error al crear la cuenta: \(error.localizedDescription)")
+            } else if let user = authResult?.user {
+                userID = user.uid // Store the user's UID
+                print("Cuenta creada exitosamente, UID: \(user.uid)")
+                
+                // Call UserService to create Firestore document for the new user
+                userService.createUserDocument(user: user, fullName: fullName)
+                
+                // Navigate to login view or main screen
+                withAnimation {
+                    currentShowingView = "login"
+                }
+            }
+        }
     }
 }
 
