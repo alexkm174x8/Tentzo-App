@@ -1,5 +1,6 @@
 import SwiftUI
 import FirebaseAuth
+import FirebaseFirestore
 
 struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
@@ -16,8 +17,9 @@ struct RoundedCorner: Shape {
 }
 
 struct Profile: View {
-    @AppStorage("uid") var userID: String = ""  // Necesito el UID para cerrar sesion
-    
+    @AppStorage("uid") var userID: String = ""
+    @State private var firstName: String = "Tú" // por si no se jala bien la info, que diga algo generico
+
     var body: some View {
         VStack {
             Rectangle()
@@ -38,7 +40,7 @@ struct Profile: View {
                                 Text("¡Hola,")
                                     .font(.title)
                                     .foregroundStyle(.white)
-                                Text("Ale")
+                                Text(firstName)
                                     .font(.title)
                                     .fontWeight(.bold)
                                     .foregroundStyle(.white)
@@ -79,9 +81,29 @@ struct Profile: View {
             
         }
         .shadow(color: Color.black.opacity(0.4), radius: 5, x: 0, y: 5)
+        .onAppear {
+            fetchUserFirstName()
+        }
     }
     
-    func logOutUser() { // cerrar sesion
+    func fetchUserFirstName() {
+        let db = Firestore.firestore()
+        guard !userID.isEmpty else { return }
+        
+        let userRef = db.collection("Usuario").document(userID)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                if let fullName = document.data()?["nombre"] as? String {
+                    // que solo se muestre el primer nombre
+                    firstName = fullName.components(separatedBy: " ").first ?? "User"
+                }
+            } else if let error = error {
+                print("Error fetching user data: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func logOutUser() { // Log out
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
