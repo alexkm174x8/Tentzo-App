@@ -1,0 +1,6 @@
+framework module Pods_Tentzo_App {
+  umbrella header "Pods-Tentzo-App-umbrella.h"
+
+  export *
+  module * { export * }
+}

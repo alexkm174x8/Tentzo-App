@@ -17,6 +17,7 @@
 		795826E92CDD815000B9897F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E82CDD814800B9897F /* UserService.swift */; };
 		795826EB2CDDBB4D00B9897F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826EA2CDDBB4D00B9897F /* ImagePicker.swift */; };
 		795826EE2CDDCAA800B9897F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 795826ED2CDDCAA800B9897F /* SDWebImageSwiftUI */; };
+		798B091B2CE12F9400D83BB0 /* LocationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798B091A2CE12F9400D83BB0 /* LocationsManager.swift */; };
 		79B8A8E42CB5B7CF0096A824 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A8E32CB5B7CF0096A824 /* FirebaseAnalytics */; };
 		79B8A8E62CB5B7CF0096A824 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A8E52CB5B7CF0096A824 /* FirebaseAnalyticsOnDeviceConversion */; };
 		79B8A8E82CB5B7CF0096A824 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A8E72CB5B7CF0096A824 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -40,7 +41,6 @@
 		79B8A90C2CB5B7CF0096A824 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A90B2CB5B7CF0096A824 /* FirebaseRemoteConfig */; };
 		79B8A90E2CB5B7CF0096A824 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A90D2CB5B7CF0096A824 /* FirebaseStorage */; };
 		79B8A9102CB5B7CF0096A824 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A90F2CB5B7CF0096A824 /* FirebaseStorageCombine-Community */; };
-		79B8A9122CB5B7CF0096A824 /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = 79B8A9112CB5B7CF0096A824 /* FirebaseVertexAI-Preview */; };
 		79B8A9732CB638170096A824 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B8A9722CB638170096A824 /* AuthView.swift */; };
 		833C90292C7E559F00A24C0A /* Tentzo_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */; };
 		833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833C902A2C7E559F00A24C0A /* ContentView.swift */; };
@@ -74,6 +74,7 @@
 		795826E62CDD0BB600B9897F /* MapViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewContainer.swift; sourceTree = "<group>"; };
 		795826E82CDD814800B9897F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		795826EA2CDDBB4D00B9897F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		798B091A2CE12F9400D83BB0 /* LocationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsManager.swift; sourceTree = "<group>"; };
 		79B8A9722CB638170096A824 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		833C90252C7E559F00A24C0A /* Tentzo-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tentzo-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		833C90282C7E559F00A24C0A /* Tentzo_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tentzo_AppApp.swift; sourceTree = "<group>"; };
@@ -104,7 +105,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79B8A9122CB5B7CF0096A824 /* FirebaseVertexAI-Preview in Frameworks */,
 				79B8A8FC2CB5B7CF0096A824 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				79B8A8FE2CB5B7CF0096A824 /* FirebaseFunctions in Frameworks */,
 				79B8A90A2CB5B7CF0096A824 /* FirebasePerformance in Frameworks */,
@@ -237,6 +237,7 @@
 			children = (
 				83B6A1B62C922DDB001489F7 /* RoutePreview.swift */,
 				83BAFBF32C934ACD0010D0E4 /* MapView.swift */,
+				798B091A2CE12F9400D83BB0 /* LocationsManager.swift */,
 				8353A3F32CA47A9100C3844F /* RouteDetails.swift */,
 				795826DE2CDD082100B9897F /* Coordinate.swift */,
 				795826E02CDD084E00B9897F /* RouteViewModel.swift */,
@@ -317,7 +318,6 @@
 				79B8A90B2CB5B7CF0096A824 /* FirebaseRemoteConfig */,
 				79B8A90D2CB5B7CF0096A824 /* FirebaseStorage */,
 				79B8A90F2CB5B7CF0096A824 /* FirebaseStorageCombine-Community */,
-				79B8A9112CB5B7CF0096A824 /* FirebaseVertexAI-Preview */,
 				795826ED2CDDCAA800B9897F /* SDWebImageSwiftUI */,
 			);
 			productName = "Tentzo-App";
@@ -383,6 +383,7 @@
 				83BAFBF42C934ACD0010D0E4 /* MapView.swift in Sources */,
 				795826E92CDD815000B9897F /* UserService.swift in Sources */,
 				8353A3F42CA47A9100C3844F /* RouteDetails.swift in Sources */,
+				798B091B2CE12F9400D83BB0 /* LocationsManager.swift in Sources */,
 				795826DF2CDD082400B9897F /* Coordinate.swift in Sources */,
 				83A2DC1E2C824663001588C0 /* Services.swift in Sources */,
 				833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */,
@@ -759,11 +760,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 79B8A8E22CB5B7CF0096A824 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
-		};
-		79B8A9112CB5B7CF0096A824 /* FirebaseVertexAI-Preview */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 79B8A8E22CB5B7CF0096A824 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseVertexAI-Preview";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
