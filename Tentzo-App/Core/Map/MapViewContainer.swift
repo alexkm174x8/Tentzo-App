@@ -11,31 +11,44 @@ import MapKit
 struct MapViewContainer: View {
     var id_ruta: Int
     @StateObject private var viewModel = RouteViewModel()
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             if let errorMessage = viewModel.errorMessage {
-                return AnyView(Text(errorMessage)
+                Text(errorMessage)
                     .foregroundColor(.red)
-                    .padding())
+                    .padding()
             } else if !viewModel.coordinates.isEmpty {
-                guard let lastCoordinate = viewModel.coordinates.last else {
-                    return AnyView(Text("No finish point available"))
+                if let lastCoordinate = viewModel.coordinates.last {
+                    let finishPoint = CLLocationCoordinate2D(latitude: lastCoordinate.latitud, longitude: lastCoordinate.longitud)
+                    
+                    MapViewForRoute(
+                        coordinates: viewModel.coordinates,
+                        finishPoint: finishPoint
+                    )
+                    .edgesIgnoringSafeArea(.all)
+                } else {
+                    Text("No finish point available")
                 }
-
-                let finishPoint = CLLocationCoordinate2D(latitude: lastCoordinate.latitud, longitude: lastCoordinate.longitud)
-
-                return AnyView(MapViewForRoute(
-                    coordinates: viewModel.coordinates,
-                    finishPoint: finishPoint
-                ).edgesIgnoringSafeArea(.all))
             } else {
-                return AnyView(ProgressView("Cargando ruta..."))
+                ProgressView("Cargando ruta...")
             }
+            
+            Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }) {
+                Image(systemName: "arrow.left.circle.fill")
+                    .foregroundColor(.green)
+                    .font(.system(size: 32))
+                    .padding()
+                    .background(Color.white.opacity(0.8))
+                    .clipShape(Circle())
+            }
+            .padding([.top, .leading], 20)
         }
         .onAppear {
             viewModel.fetchCoordinates(for: id_ruta)
         }
     }
 }
-
