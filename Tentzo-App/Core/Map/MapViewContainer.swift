@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct MapViewContainer: View {
     var id_ruta: Int
@@ -14,14 +15,22 @@ struct MapViewContainer: View {
     var body: some View {
         ZStack {
             if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage)
+                return AnyView(Text(errorMessage)
                     .foregroundColor(.red)
-                    .padding()
+                    .padding())
             } else if !viewModel.coordinates.isEmpty {
-                MapViewForRoute(coordinates: viewModel.coordinates)
-                    .edgesIgnoringSafeArea(.all)
+                guard let lastCoordinate = viewModel.coordinates.last else {
+                    return AnyView(Text("No finish point available"))
+                }
+
+                let finishPoint = CLLocationCoordinate2D(latitude: lastCoordinate.latitud, longitude: lastCoordinate.longitud)
+
+                return AnyView(MapViewForRoute(
+                    coordinates: viewModel.coordinates,
+                    finishPoint: finishPoint
+                ).edgesIgnoringSafeArea(.all))
             } else {
-                ProgressView("Cargando ruta...")
+                return AnyView(ProgressView("Cargando ruta..."))
             }
         }
         .onAppear {
@@ -29,3 +38,4 @@ struct MapViewContainer: View {
         }
     }
 }
+
