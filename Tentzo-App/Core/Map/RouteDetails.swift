@@ -15,9 +15,8 @@ struct RouteDetails: View {
     
     var body: some View {
         ZStack {
-            ZStack(alignment: .top) {
-                AsyncImageView(url: imagen)
-            }
+            MapViewPreview(id_ruta: id_ruta)
+                .edgesIgnoringSafeArea(.all)
             
             VStack {
                 Spacer()
@@ -60,6 +59,7 @@ struct RouteDetails: View {
                                 .padding(.horizontal)
                                 
                                 Divider()
+                                
                                 Text(nombre)
                                     .font(.title)
                                     .bold()
@@ -106,15 +106,12 @@ struct RouteDetails: View {
                                 }
                                 .padding(.bottom, 75)
                             }
-                                .padding(.top, 30)
+                            .padding(.top, 30)
                         )
                 }
             }
             .ignoresSafeArea(edges: .bottom)
             .toolbar(.hidden, for: .tabBar)
-            .sheet(isPresented: $showMapView) {
-                MapViewContainer(id_ruta: self.id_ruta)
-            }
         }
     }
 }

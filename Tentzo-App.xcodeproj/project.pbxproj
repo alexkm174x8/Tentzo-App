@@ -10,6 +10,7 @@
 		7904BD042CA8DE0A0098F9CE /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7904BD032CA8DE0A0098F9CE /* SplashScreenView.swift */; };
 		7904BD062CA8DE3D0098F9CE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7904BD052CA8DE3D0098F9CE /* LoginView.swift */; };
 		7904BD082CA8DE4F0098F9CE /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7904BD072CA8DE4F0098F9CE /* SignupView.swift */; };
+		790996D52CE3154300AD2AD7 /* MapViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790996D42CE3154300AD2AD7 /* MapViewPreview.swift */; };
 		795826DF2CDD082400B9897F /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826DE2CDD082100B9897F /* Coordinate.swift */; };
 		795826E12CDD085500B9897F /* RouteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E02CDD084E00B9897F /* RouteViewModel.swift */; };
 		795826E52CDD0B8500B9897F /* MapViewForRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795826E42CDD0B7D00B9897F /* MapViewForRoute.swift */; };
@@ -68,6 +69,7 @@
 		7904BD032CA8DE0A0098F9CE /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		7904BD052CA8DE3D0098F9CE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7904BD072CA8DE4F0098F9CE /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		790996D42CE3154300AD2AD7 /* MapViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPreview.swift; sourceTree = "<group>"; };
 		795826DE2CDD082100B9897F /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		795826E02CDD084E00B9897F /* RouteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewModel.swift; sourceTree = "<group>"; };
 		795826E42CDD0B7D00B9897F /* MapViewForRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewForRoute.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			children = (
 				83B6A1B62C922DDB001489F7 /* RoutePreview.swift */,
 				83BAFBF32C934ACD0010D0E4 /* MapView.swift */,
+				790996D42CE3154300AD2AD7 /* MapViewPreview.swift */,
 				798B091A2CE12F9400D83BB0 /* LocationsManager.swift */,
 				8353A3F32CA47A9100C3844F /* RouteDetails.swift */,
 				795826DE2CDD082100B9897F /* Coordinate.swift */,
@@ -386,6 +389,7 @@
 				798B091B2CE12F9400D83BB0 /* LocationsManager.swift in Sources */,
 				795826DF2CDD082400B9897F /* Coordinate.swift in Sources */,
 				83A2DC1E2C824663001588C0 /* Services.swift in Sources */,
+				790996D52CE3154300AD2AD7 /* MapViewPreview.swift in Sources */,
 				833C902B2C7E559F00A24C0A /* ContentView.swift in Sources */,
 				837C33AE2C8786E40091AF7D /* InfoView.swift in Sources */,
 				837C33AA2C8786CF0091AF7D /* CameraView.swift in Sources */,
