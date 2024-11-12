@@ -12,7 +12,9 @@ struct MapViewContainer: View {
     var id_ruta: Int
     @StateObject private var viewModel = RouteViewModel()
     @Environment(\.presentationMode) var presentationMode
-
+    
+    @State private var mapType: MKMapType = .hybrid
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             if let errorMessage = viewModel.errorMessage {
@@ -25,7 +27,8 @@ struct MapViewContainer: View {
                     
                     MapViewForRoute(
                         coordinates: viewModel.coordinates,
-                        finishPoint: finishPoint
+                        finishPoint: finishPoint,
+                        mapType: mapType
                     )
                     .edgesIgnoringSafeArea(.all)
                 } else {
@@ -35,15 +38,21 @@ struct MapViewContainer: View {
                 ProgressView("Cargando ruta...")
             }
             
-            Button(action: {
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                Image(systemName: "arrow.left.circle.fill")
-                    .foregroundColor(.green)
-                    .font(.system(size: 32))
-                    .padding()
-                    .background(Color.white.opacity(0.8))
-                    .clipShape(Circle())
+            VStack {
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "arrow.left.circle.fill")
+                            .foregroundColor(.green)
+                            .font(.system(size: 32))
+                            .padding()
+                            .background(Color.white.opacity(0.8))
+                            .clipShape(Circle())
+                    }
+                    Spacer()
+                }
+                Spacer()
             }
             .padding([.top, .leading], 20)
         }

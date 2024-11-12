@@ -14,16 +14,17 @@ struct MapViewWithBackButton: View {
     var finishPoint: CLLocationCoordinate2D
     var completionThreshold: Double = 10.0
     
+    @State private var mapType: MKMapType = .standard
+    
     var body: some View {
         ZStack {
-            // Map view
             MapViewForRoute(
                 coordinates: coordinates,
                 finishPoint: finishPoint,
-                completionThreshold: completionThreshold
+                completionThreshold: completionThreshold,
+                mapType: mapType
             )
             
-            // Back button
             VStack {
                 HStack {
                     Button(action: {
@@ -35,11 +36,19 @@ struct MapViewWithBackButton: View {
                             .padding()
                     }
                     Spacer()
+                    
+                    Picker("Map Type", selection: $mapType) {
+                        Text("Standard").tag(MKMapType.standard)
+                        Text("Satellite").tag(MKMapType.satellite)
+                        Text("Hybrid").tag(MKMapType.hybrid)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.trailing)
                 }
                 Spacer()
             }
         }
-        .edgesIgnoringSafeArea(.all) // Makes the map view full screen
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -47,12 +56,14 @@ struct MapViewForRoute: UIViewRepresentable {
     var coordinates: [Coordinate]
     var finishPoint: CLLocationCoordinate2D
     var completionThreshold: Double = 10.0
+    var mapType: MKMapType
     @ObservedObject var locationManager = LocationManager()
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = true
+        mapView.mapType = mapType
         return mapView
     }
     
@@ -60,7 +71,8 @@ struct MapViewForRoute: UIViewRepresentable {
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
         
-        // Create and add the polyline overlay from route coordinates
+        mapView.mapType = mapType
+        
         let locations = coordinates.map {
             CLLocationCoordinate2D(latitude: $0.latitud, longitude: $0.longitud)
         }
