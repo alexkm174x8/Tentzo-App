@@ -20,7 +20,7 @@ struct RoundedCorner: Shape {
 
 struct Profile: View {
     @AppStorage("uid") var userID: String = ""
-    @State private var firstName: String = "Tú" // por si no se jala bien la info, que diga algo generico
+    @State private var firstName: String = "Tú"
     @State private var profileImage: UIImage?
     @State private var isImagePickerPresented = false
 
@@ -31,7 +31,7 @@ struct Profile: View {
                 .clipShape(RoundedCorner(radius: 25, corners: [.bottomLeft, .bottomRight]))
                 .ignoresSafeArea()
                 .overlay {
-                    HStack {
+                    HStack(spacing: 20) {
                         Button(action: {
                             isImagePickerPresented = true
                         }) {
@@ -43,19 +43,17 @@ struct Profile: View {
                                     .clipShape(Circle())
                                     .padding(.leading, 20)
                             } else {
-                                Image(systemName: "person.crop.circle.fill.badge.plus") // lo que se muestra
-                                    .resizable() // antes de que se agrega una foto
+                                Image(systemName: "person.crop.circle.fill.badge.plus")
+                                    .resizable()
                                     .scaledToFit()
                                     .frame(width: 130, height: 130)
                                     .foregroundColor(.white)
-                                    .padding(.leading, 20)
                             }
                         }
-                        Spacer()
                         
                         VStack(alignment: .leading, spacing: 6) {
                             HStack {
-                                Text("¡Hola,")
+                                Text("¡ Hola,")
                                     .font(.title)
                                     .foregroundStyle(.white)
                                 Text(firstName)
@@ -90,11 +88,11 @@ struct Profile: View {
                                             .stroke(Color.white, lineWidth: 1)
                                     )
                             }
-                            .padding(.top, 7)
+                            .padding(.trailing, 50)
+                            .padding(.top, 6)
                         }
-                        .padding(36)
+                        .padding(10)
                     }
-                    .padding()
                 }
             
         }
@@ -202,4 +200,5 @@ struct Profile: View {
 #Preview {
     Profile()
 }
+
 
