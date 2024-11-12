@@ -8,15 +8,16 @@ struct RouteDetails: View {
     var distancia: String
     var tiempo: String
     var detalles: String
-    var imagen: String
     var id_ruta: Int
     
     @State private var showMapView = false
     
     var body: some View {
         ZStack {
-            MapViewPreview(id_ruta: id_ruta)
-                .edgesIgnoringSafeArea(.all)
+            // cambie imagen por el mapa
+            ZStack(alignment: .top) {
+                MapViewPreview(id_ruta: id_ruta)
+            }
             
             VStack {
                 Spacer()
@@ -26,7 +27,6 @@ struct RouteDetails: View {
                         .fill(Color.white)
                         .frame(width: 405, height: 500)
                         .overlay(
-                            
                             VStack(alignment: .leading, spacing: 20) {
                                 HStack {
                                     VStack(alignment: .leading) {
@@ -112,6 +112,9 @@ struct RouteDetails: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .toolbar(.hidden, for: .tabBar)
+            .sheet(isPresented: $showMapView) {
+                MapViewContainer(id_ruta: self.id_ruta)
+            }
         }
     }
 }

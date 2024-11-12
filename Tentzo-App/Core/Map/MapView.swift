@@ -54,7 +54,6 @@ struct RoutesListView: View {
                         distancia: route.distancia,
                         tiempo: route.tiempo,
                         detalles: route.detalles,
-                        imagen: route.imagen,
                         id_ruta: Int(route.id_ruta) ?? 0
                 )) {
                     RoutePreview(nombre: route.nombre, image: route.imagen)
