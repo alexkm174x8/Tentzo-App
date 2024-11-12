@@ -17,18 +17,6 @@ struct RouteDetails: View {
         ZStack {
             ZStack(alignment: .top) {
                 AsyncImageView(url: imagen)
-                HStack {
-                    Image(systemName: "arrow.left")
-                        .foregroundColor(.white)
-                        .font(.system(size: 25))
-                    
-                    Text(nombre)
-                        .font(.title)
-                        .bold()
-                        .foregroundColor(.white)
-                }
-                .padding(.trailing, 160)
-                .padding(.top, 10)
             }
             
             VStack {
@@ -72,6 +60,11 @@ struct RouteDetails: View {
                                 .padding(.horizontal)
                                 
                                 Divider()
+                                Text(nombre)
+                                    .font(.title)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .padding(.leading)
                                 
                                 ScrollView {
                                     VStack(alignment: .leading) {
@@ -95,8 +88,6 @@ struct RouteDetails: View {
                                 }
                                 .frame(maxHeight: 200)
                                 
-                                Spacer()
-                                
                                 HStack {
                                     Spacer()
                                     
@@ -113,7 +104,7 @@ struct RouteDetails: View {
                                     }
                                     Spacer()
                                 }
-                                .padding(.bottom, 95)
+                                .padding(.bottom, 75)
                             }
                                 .padding(.top, 30)
                         )
