@@ -52,7 +52,7 @@ struct LibraryView: View {
                                 descripcion: planta.descripcion,
                                 imagen: planta.imagen
                             )) {
-                                PlantInfo(nomComun: planta.nomComun, imagen: planta.imagen)
+                                PlantInfo(nomComun: planta.nomComun, imagen: planta.imagen, nomCientifico: planta.nomCientifico)
                             }
                         }
                     }

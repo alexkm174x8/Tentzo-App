@@ -6,6 +6,7 @@ struct PlantInfo: View {
     @State private var retrievedImage: UIImage?
     var nomComun: String
     var imagen: String
+    var nomCientifico : String
 
     var body: some View {
         VStack {
@@ -16,14 +17,14 @@ struct PlantInfo: View {
                     if let retrievedImage = retrievedImage {
                         Image(uiImage: retrievedImage)
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 85, height: 85)
+                            .clipShape(RoundedCorner(radius: 23))
                     } else {
                         ProgressView()
                     }
                 }
 
-            Text(nomComun)
+            Text(nomComun == "" ? nomCientifico : nomComun)
                 .foregroundStyle(Color.black)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
@@ -55,5 +56,5 @@ struct PlantInfo: View {
 
 
 #Preview {
-    PlantInfo(nomComun: "Flor", imagen: "leaf.fill")
+    PlantInfo(nomComun: "Flor", imagen: "leaf.fill", nomCientifico: "Caca")
 }
