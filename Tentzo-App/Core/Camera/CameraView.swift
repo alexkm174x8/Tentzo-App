@@ -2,20 +2,214 @@ import SwiftUI
 import AVFoundation
 import Photos
 import PhotosUI
+import UIKit
 
+// Plant Info response model (simplified to only extract the name)
+struct PlantAPI: Codable {
+    struct Plant: Codable {
+        let commonName: String?  // The common name of the plant
+        let scientificName: String?  // The scientific name of the plant
+    }
+
+    let id: Int
+    let plant: Plant
+}
+
+// API Request function to fetch plant info from the Plant.id API
+// Helper function to append string data as Data
+extension Data {
+    mutating func append(_ string: String) {
+        if let stringData = string.data(using: .utf8) {
+            append(stringData)
+        }
+    }
+}
+
+// API Request function to fetch plant info from the Plant.id API
+func getPlantInfo(from imageData: Data, completion: @escaping (Result<String, Error>) -> Void) {
+    guard let url = URL(string: "https://api.plant.id/v2/identify") else {
+        completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    
+    // Set your API key here
+    let apiKey = "YOUR_PLANT_ID_API_KEY"  // Replace with your actual API key
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+    
+    // Construct the multipart form data
+    var body = Data()
+    
+    // Add boundary string to body
+    let boundary = "Boundary-\(UUID().uuidString)"
+    request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+    
+    // Add image data to body
+    body.append("--\(boundary)\r\n")
+    body.append("Content-Disposition: form-data; name=\"images[]\"; filename=\"image.jpg\"\r\n")
+    body.append("Content-Type: image/jpeg\r\n\r\n")
+    body.append(imageData)  // Append the image data itself
+    body.append("\r\n")
+    
+    // Add closing boundary
+    body.append("--\(boundary)--\r\n")
+    
+    request.httpBody = body
+    
+    // Perform the network request
+    let session = URLSession.shared
+    session.dataTask(with: request) { data, response, error in
+        if let error = error {
+            completion(.failure(error))
+            return
+        }
+        
+        guard let data = data else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+            return
+        }
+        
+        // Parse the response JSON to extract the plant name (common or scientific)
+        do {
+            let plantInfo = try JSONDecoder().decode(PlantAPI.self, from: data)
+            if let commonName = plantInfo.plant.commonName {
+                completion(.success(commonName))  // Return the common name
+            } else if let scientificName = plantInfo.plant.scientificName {
+                completion(.success(scientificName))  // Return the scientific name if the common name is unavailable
+            } else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No plant name found"])))
+            }
+            
+            //Hola Kong, t quiero muxo
+            
+        } catch {
+            completion(.failure(error))
+        }
+    }.resume()
+}
+
+
+
+// CameraModel class that handles photo capture and interaction with Plant.id API
+class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
+    @Published var isTaken = false
+    @Published var session = AVCaptureSession()
+    @Published var alert = false
+    @Published var output = AVCapturePhotoOutput()
+    @Published var preview: AVCaptureVideoPreviewLayer!
+    @Published var isSaved = false
+    @Published var picData = Data(count: 0)
+    
+    @Published var plantName: String?  // Store the plant name (common or scientific)
+
+    func check() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            setUp()
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { (status) in
+                if status {
+                    self.setUp()
+                } else {
+                    DispatchQueue.main.async {
+                        self.alert = true
+                    }
+                }
+            }
+        case .denied, .restricted:
+            DispatchQueue.main.async {
+                self.alert = true
+            }
+        @unknown default:
+            break
+        }
+    }
+
+    func setUp() {
+        do {
+            self.session.beginConfiguration()
+
+            guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
+                print("No front camera available")
+                return
+            }
+            let input = try AVCaptureDeviceInput(device: device)
+            if self.session.canAddInput(input) {
+                self.session.addInput(input)
+            } else {
+                print("Could not add input")
+            }
+            if self.session.canAddOutput(self.output) {
+                self.session.addOutput(self.output)
+            } else {
+                print("Could not add output")
+            }
+            self.session.commitConfiguration()
+
+            DispatchQueue.global(qos: .background).async {
+                self.session.startRunning()
+            }
+        } catch {
+            print("Error during setup: \(error.localizedDescription)")
+        }
+    }
+
+    func takePic() {
+        DispatchQueue.global(qos: .background).async {
+            if !self.session.isRunning {
+                self.session.startRunning()
+            }
+            let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
+            self.output.capturePhoto(with: settings, delegate: self)
+        }
+    }
+
+    func reTake() {
+        DispatchQueue.main.async {
+            withAnimation {
+                self.isTaken = false
+                self.isSaved = false
+            }
+        }
+    }
+
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let error = error {
+            print("Error capturing photo: \(error.localizedDescription)")
+            return
+        }
+        
+        guard let imageData = photo.fileDataRepresentation() else {
+            print("Error: Could not get image data from photo")
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.picData = imageData
+            withAnimation {
+                self.isTaken = true
+            }
+            
+            // Call the Plant.id API to get the plant name
+            getPlantInfo(from: imageData) { result in
+                switch result {
+                case .success(let plantName):
+                    // Handle the plant name response
+                    self.plantName = plantName  // Set the plant name
+                    print("Plant Name: \(plantName)")
+                case .failure(let error):
+                    print("Error getting plant info: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+}
+
+// SwiftUI view to display camera preview and plant name
 struct CameraView: View {
-    var body: some View {
-        Camera()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        CameraView()
-    }
-}
-
-struct Camera: View {
     @StateObject var camera = CameraModel()
     @State private var showSaveAlert = false
     @State private var showPhotoPicker = false
@@ -63,280 +257,54 @@ struct Camera: View {
                     Spacer()
                 }
                 Spacer()
-                HStack {
-                    if camera.isTaken || selectedImage != nil {
-                        Button(action: {
-                            if !camera.isSaved {
-                                if let imageToSave = selectedImage {
-                                    saveImage(imageToSave)
-                                } else {
-                                    camera.savePic { success in
-                                        if success {
-                                            showSaveAlert = true
-                                        }
-                                    }
-                                }
-                            }
-                        }, label: {
-                            Text(camera.isSaved ? "Saved" : "Save")
-                                .foregroundColor(.black)
-                                .fontWeight(.semibold)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 20)
-                                .background(Color.white)
-                                .clipShape(Capsule())
-                        })
-                        .padding(.leading, 25)
-                        Spacer()
-                    } else {
-                        Button(action: camera.takePic, label: {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 65, height: 65)
-                                Circle()
-                                    .stroke(Color.white, lineWidth: 2)
-                                    .frame(width: 75, height: 75)
-                            }
-                        })
 
-                        Button(action: {
-                            showPhotoPicker = true
-                        }, label: {
-                            Image(systemName: "photo.on.rectangle")
-                                .foregroundColor(.black)
-                                .padding()
-                                .background(Color.white)
-                                .clipShape(Circle())
-                        })
-                        .padding(.leading)
-                        .sheet(isPresented: $showPhotoPicker) {
-                            PhotoPicker(selectedImage: $selectedImage, isPresented: $showPhotoPicker)
+                // Display the plant name
+                if let plantName = camera.plantName {
+                    Text("Plant Name: \(plantName)")
+                        .font(.title)
+                        .padding()
+                } else {
+                    Text("No plant name detected")
+                        .font(.subheadline)
+                        .padding()
+                }
+
+                HStack {
+                    Button(action: camera.takePic, label: {
+                        ZStack {
+                            Circle()
+                                .fill(Color.white)
+                                .frame(width: 65, height: 65)
+                            Circle()
+                                .stroke(Color.white, lineWidth: 2)
+                                .frame(width: 75, height: 75)
                         }
+                    })
+
+                    Button(action: {
+                        showPhotoPicker = true
+                    }, label: {
+                        Image(systemName: "photo.on.rectangle")
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(Color.white)
+                            .clipShape(Circle())
+                    })
+                    .padding(.leading)
+                    .sheet(isPresented: $showPhotoPicker) {
+                        PhotoPicker(selectedImage: $selectedImage, isPresented: $showPhotoPicker)
                     }
                 }
                 .frame(height: 75)
             }
         }
-        .onAppear(perform: {
+        .onAppear {
             camera.check()
-        })
-
-        .alert(isPresented: $camera.alert) {
-            Alert(
-                title: Text("Permiso denegado"),
-                message: Text("Por favor permita el acceso a la cámara y a la biblioteca de fotos en la configuración."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-
-        .alert(isPresented: $showSaveAlert) {
-            Alert(
-                title: Text("Éxito"),
-                message: Text("Imagen guardada con éxito."),
-                dismissButton: .default(Text("OK"), action: {
-                    camera.isSaved = false
-                })
-            )
-        }
-    }
-
-    func saveImage(_ image: UIImage) {
-        PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
-            if status == .authorized || status == .limited {
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAsset(from: image)
-                }) { success, error in
-                    DispatchQueue.main.async {
-                        if success {
-                            camera.isSaved = true
-                            showSaveAlert = true
-                            print("Selected image saved successfully...")
-                        } else {
-                            camera.alert = true
-                            print("Error saving selected image: \(error?.localizedDescription ?? "Unknown error")")
-                        }
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    camera.alert = true
-                }
-            }
         }
     }
 }
 
-
-class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
-    @Published var isTaken = false
-    @Published var session = AVCaptureSession()
-    @Published var alert = false
-    @Published var output = AVCapturePhotoOutput()
-    @Published var preview: AVCaptureVideoPreviewLayer!
-    @Published var isSaved = false
-    @Published var picData = Data(count: 0)
-
-
-    func check() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            setUp()
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { (status) in
-                if status {
-                    self.setUp()
-                } else {
-                    DispatchQueue.main.async {
-                        self.alert = true
-                    }
-                }
-            }
-        case .denied, .restricted:
-            DispatchQueue.main.async {
-                self.alert = true
-            }
-        @unknown default:
-            break
-        }
-    }
-
-
-    func setUp() {
-        do {
-            self.session.beginConfiguration()
-
-            guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
-                print("No front camera available")
-                return
-            }
-            let input = try AVCaptureDeviceInput(device: device)
-            if self.session.canAddInput(input) {
-                self.session.addInput(input)
-                print("Input added")
-            } else {
-                print("Could not add input")
-            }
-            if self.session.canAddOutput(self.output) {
-                self.session.addOutput(self.output)
-                print("Output added")
-            } else {
-                print("Could not add output")
-            }
-            self.session.commitConfiguration()
-
-
-            DispatchQueue.global(qos: .background).async {
-                self.session.startRunning()
-            }
-        } catch {
-            print("Error during setup: \(error.localizedDescription)")
-        }
-    }
-
-
-    func takePic() {
-        DispatchQueue.global(qos: .background).async {
-            if !self.session.isRunning {
-                self.session.startRunning()
-            }
-            let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
-            self.output.capturePhoto(with: settings, delegate: self)
-
-        }
-    }
-
-
-    func reTake() {
-        DispatchQueue.main.async {
-            withAnimation {
-                self.isTaken = false
-                self.isSaved = false
-            }
-        }
-    }
-
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        if let error = error {
-            print("Error capturing photo: \(error.localizedDescription)")
-            return
-        }
-        print("photoOutput called")
-        guard let imageData = photo.fileDataRepresentation() else {
-            print("Error: Could not get image data from photo")
-            return
-        }
-        print("picData length: \(imageData.count)")
-        DispatchQueue.main.async {
-            self.picData = imageData
-            withAnimation {
-                self.isTaken = true
-            }
-            //self.session.stopRunning()
-        }
-    }
-
-
-    func savePic(completion: @escaping (Bool) -> Void) {
-        guard !self.picData.isEmpty else {
-            print("Error: picData is empty")
-            DispatchQueue.main.async {
-                self.alert = true
-                completion(false)
-            }
-            return
-        }
-        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-        if status == .authorized || status == .limited {
-            saveImageToPhotoLibrary(completion: completion)
-        } else if status == .notDetermined {
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { newStatus in
-                if newStatus == .authorized || newStatus == .limited {
-                    self.saveImageToPhotoLibrary(completion: completion)
-                } else {
-                    DispatchQueue.main.async {
-                        self.alert = true
-                        completion(false)
-                    }
-                }
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.alert = true
-                completion(false)
-            }
-        }
-    }
-
-
-    private func saveImageToPhotoLibrary(completion: @escaping (Bool) -> Void) {
-        guard let image = UIImage(data: self.picData) else {
-            print("Error: Could not create UIImage from picData")
-            DispatchQueue.main.async {
-                self.alert = true
-                completion(false)
-            }
-            return
-        }
-        PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        }) { success, error in
-            DispatchQueue.main.async {
-                if success {
-                    self.isSaved = true
-                    print("Saved successfully...")
-                    completion(true)
-                } else {
-                    self.alert = true
-                    print("Error saving photo: \(error?.localizedDescription ?? "Unknown error")")
-                    completion(false)
-                }
-            }
-        }
-    }
-}
-
-
+// CameraPreview for showing camera input
 struct CameraPreview: UIViewRepresentable {
     @ObservedObject var camera: CameraModel
 
@@ -352,6 +320,7 @@ struct CameraPreview: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
+// ImageView to display the captured image
 struct ImageView: View {
     let imageData: Data
 
@@ -370,6 +339,7 @@ struct ImageView: View {
     }
 }
 
+// PhotoPicker for selecting images from the photo library
 struct PhotoPicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
     @Binding var isPresented: Bool
@@ -385,8 +355,7 @@ struct PhotoPicker: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
-    }
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -409,11 +378,15 @@ struct PhotoPicker: UIViewControllerRepresentable {
                         DispatchQueue.main.async {
                             self?.parent.selectedImage = image
                         }
-                    } else {
-                        print("Error loading image from picker: \(error?.localizedDescription ?? "Unknown error")")
                     }
                 }
             }
         }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        CameraView()
     }
 }
