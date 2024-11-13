@@ -2,86 +2,28 @@ import SwiftUI
 import UIKit
 
 struct Services: View {
-    var body:some View {
+    var body: some View {
         VStack {
             Divider()
-            HStack {
-                VStack(alignment: .leading, spacing: 5.0) {
-                    Text("Mis Servicios")
-                        .fontWeight(.bold)
-                        .padding(.bottom, 13)
-                        .font(.system(size: 24))
+            VStack(alignment: .center) {
+                Text("Especie destacada")
+                    .fontWeight(.bold)
+                    .font(.system(size: 24))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
+                    .padding(.leading, 20)
                 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
-                            .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
-                        
-                        HStack(spacing: 5) {
-                            Image(systemName: "shoeprints.fill")
-                            
-                            VStack {
-                                Text("1,236")
-                                    .bold()
-                                Text("pasos")
-                                    .foregroundColor(Color.gray)
-                            }
-                            .frame(width: 113)
-                        }
-                        .padding()
-                    }
-                }
-                .padding()
                 Image("plantD")
                     .resizable()
                     .scaledToFit()
-                    .cornerRadius(20)
+                    .cornerRadius(15)
                     .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
+                    .frame(width: 270, height: 150)
             }
-            .frame(height: 120)
+            .frame(maxWidth: .infinity)
             .padding(.bottom)
             .padding(.trailing)
             .padding(.top, 10)
-            
-            HStack(spacing: 28){
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
-                        .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
-                    
-                    HStack(spacing: 5) {
-                        Image(systemName: "shoeprints.fill")
-                        
-                        VStack {
-                            Text("1,236")
-                                .bold()
-                            Text("pasos")
-                                .foregroundColor(Color.gray)
-                        }
-                    }
-                    .padding()
-                }
-                .frame(width: 170, height: 60)
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(Color(red: 233/255, green: 244/255, blue: 202/255))
-                        .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 5)
-                    
-                    HStack(spacing: 5) {
-                        Image(systemName: "shoeprints.fill")
-                        
-                        VStack {
-                            Text("1,236")
-                                .bold()
-                            Text("pasos")
-                                .foregroundColor(Color.gray)
-                        }
-                    }
-                    .padding()
-                }
-                .frame(width: 170, height: 60)
-            }
         }
     }
 }
@@ -89,3 +31,4 @@ struct Services: View {
 #Preview {
     Services()
 }
+
