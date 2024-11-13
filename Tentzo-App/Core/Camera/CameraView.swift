@@ -23,31 +23,26 @@ struct Camera: View {
 
     var body: some View {
         ZStack {
+            CameraPreview(camera: camera)
+                .ignoresSafeArea(.all, edges: .all)
+                .opacity((camera.isTaken || selectedImage != nil) ? 0 : 1)
+            
+            if camera.isTaken && selectedImage == nil {
+                ImageView(imageData: camera.picData)
+                    .transition(.opacity)
+            }
+            
             if let image = selectedImage {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .ignoresSafeArea(.all, edges: .all)
-            } else if camera.isTaken {
-
-                if let image = UIImage(data: camera.picData) {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .ignoresSafeArea(.all, edges: .all)
-                } else {
-                    Text("Error displaying image")
-                        .foregroundColor(.white)
-                }
-            } else {
-                CameraPreview(camera: camera)
-                    .ignoresSafeArea(.all, edges: .all)
+                    .transition(.opacity)
             }
-            VStack {
 
+            VStack {
                 HStack {
                     if camera.isTaken || selectedImage != nil {
-
                         Button(action: {
                             if selectedImage != nil {
                                 selectedImage = nil
@@ -62,24 +57,22 @@ struct Camera: View {
                                 .background(Color.white)
                                 .clipShape(Circle())
                         })
-                        .padding(.leading, 30)
+                        .padding(.leading, 25)
+                        .transition(.move(edge: .leading))
                     }
                     Spacer()
                 }
                 Spacer()
                 HStack {
                     if camera.isTaken || selectedImage != nil {
-
                         Button(action: {
                             if !camera.isSaved {
-                                DispatchQueue.main.async {
-                                    if let imageToSave = selectedImage {
-                                        saveImage(imageToSave)
-                                    } else {
-                                        camera.savePic { success in
-                                            if success {
-                                                showSaveAlert = true
-                                            }
+                                if let imageToSave = selectedImage {
+                                    saveImage(imageToSave)
+                                } else {
+                                    camera.savePic { success in
+                                        if success {
+                                            showSaveAlert = true
                                         }
                                     }
                                 }
@@ -93,10 +86,9 @@ struct Camera: View {
                                 .background(Color.white)
                                 .clipShape(Capsule())
                         })
-                        .padding(.leading, 30)
+                        .padding(.leading, 25)
                         Spacer()
                     } else {
-
                         Button(action: camera.takePic, label: {
                             ZStack {
                                 Circle()
@@ -107,7 +99,6 @@ struct Camera: View {
                                     .frame(width: 75, height: 75)
                             }
                         })
-
 
                         Button(action: {
                             showPhotoPicker = true
@@ -133,8 +124,8 @@ struct Camera: View {
 
         .alert(isPresented: $camera.alert) {
             Alert(
-                title: Text("Permission Denied"),
-                message: Text("Please allow access to the camera and photo library in settings."),
+                title: Text("Permiso denegado"),
+                message: Text("Por favor permita el acceso a la cámara y a la biblioteca de fotos en la configuración."),
                 dismissButton: .default(Text("OK"))
             )
         }
@@ -142,7 +133,7 @@ struct Camera: View {
         .alert(isPresented: $showSaveAlert) {
             Alert(
                 title: Text("Éxito"),
-                message: Text("Imagen guardada con éxito"),
+                message: Text("Imagen guardada con éxito."),
                 dismissButton: .default(Text("OK"), action: {
                     camera.isSaved = false
                 })
@@ -260,11 +251,10 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         DispatchQueue.main.async {
             withAnimation {
                 self.isTaken = false
+                self.isSaved = false
             }
-            self.isSaved = false
         }
     }
-
 
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error {
@@ -362,6 +352,23 @@ struct CameraPreview: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {}
 }
 
+struct ImageView: View {
+    let imageData: Data
+
+    var body: some View {
+        Group {
+            if let image = UIImage(data: imageData) {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .ignoresSafeArea(.all, edges: .all)
+            } else {
+                Text("Error displaying image")
+                    .foregroundColor(.white)
+            }
+        }
+    }
+}
 
 struct PhotoPicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
