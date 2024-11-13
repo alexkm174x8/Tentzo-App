@@ -109,10 +109,8 @@ struct MapViewForRoute: UIViewRepresentable {
             if annotation === arrowAnnotation {
                 let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "arrow") ?? MKAnnotationView(annotation: annotation, reuseIdentifier: "arrow")
                 
-                // Use the custom asset named "arrow" instead of the system image
-                annotationView.image = UIImage(named: "arrow")
+                annotationView.image = UIImage(systemName: "arrowshape.up.circle.fill")
                 
-                // Apply rotation to align the arrow with the heading
                 annotationView.transform = CGAffineTransform(rotationAngle: CGFloat(arrowAnnotationRotation(for: mapView.camera.heading)))
                 
                 return annotationView

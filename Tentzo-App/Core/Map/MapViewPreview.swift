@@ -18,11 +18,15 @@ struct MapViewPreview: View {
     
     var body: some View {
         ZStack {
+            // Display error message if available
             if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
                     .padding()
-            } else if !viewModel.coordinates.isEmpty {
+            }
+            // Check if coordinates are not empty
+            else if !viewModel.coordinates.isEmpty {
+                // Safely unwrap the last coordinate
                 if let lastCoordinate = viewModel.coordinates.last {
                     let finishPoint = CLLocationCoordinate2D(latitude: lastCoordinate.latitud, longitude: lastCoordinate.longitud)
                     
@@ -33,10 +37,16 @@ struct MapViewPreview: View {
                         isFirstPersonViewEnabled: isFirstPersonViewEnabled // Pass the state
                     )
                     .edgesIgnoringSafeArea(.all)
-                } else {
-                    Text("No finish point available")
                 }
-            } else {
+                // Provide a message if no finish point is available
+                else {
+                    Text("No finish point available")
+                        .foregroundColor(.gray)
+                        .padding()
+                }
+            }
+            // Show a loading view while coordinates are loading
+            else {
                 ProgressView("Cargando ruta...")
             }
             
@@ -60,4 +70,5 @@ struct MapViewPreview: View {
             viewModel.fetchCoordinates(for: id_ruta)
         }
     }
+
 }

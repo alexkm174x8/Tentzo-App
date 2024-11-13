@@ -11,7 +11,7 @@ struct PlantInfo: View {
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 30)
-                .frame(width: 420, height: 100)
+                .frame(width: 100, height: 100)
                 .foregroundStyle(Color(red: 127/255, green: 194/255, blue: 151/255))
                 .overlay {
                     if let retrievedImage = retrievedImage {

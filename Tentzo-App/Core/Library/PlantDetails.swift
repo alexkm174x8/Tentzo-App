@@ -33,7 +33,7 @@ struct PlantDetails: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 30)
                         .fill(Color.white)
-                        .frame(width: 410, height: 550)
+                        .frame(width: 420, height: 550)
                         .overlay(
                             
                             VStack(alignment: .leading, spacing: 20) {
