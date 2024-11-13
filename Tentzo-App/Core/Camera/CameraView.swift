@@ -24,7 +24,6 @@ struct Camera: View {
     var body: some View {
         ZStack {
             if let image = selectedImage {
-
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -41,15 +40,14 @@ struct Camera: View {
                         .foregroundColor(.white)
                 }
             } else {
-
                 CameraPreview(camera: camera)
                     .ignoresSafeArea(.all, edges: .all)
             }
             VStack {
-                if camera.isTaken || selectedImage != nil {
 
-                    HStack {
-                        Spacer()
+                HStack {
+                    if camera.isTaken || selectedImage != nil {
+
                         Button(action: {
                             if selectedImage != nil {
                                 selectedImage = nil
@@ -58,14 +56,15 @@ struct Camera: View {
                                 camera.reTake()
                             }
                         }, label: {
-                            Image(systemName: "arrow.triangle.2.circlepath.camera")
+                            Image(systemName: "chevron.left")
                                 .foregroundColor(.black)
                                 .padding()
                                 .background(Color.white)
                                 .clipShape(Circle())
                         })
-                        .padding(.trailing, 10)
+                        .padding(.leading, 30)
                     }
+                    Spacer()
                 }
                 Spacer()
                 HStack {
@@ -94,7 +93,7 @@ struct Camera: View {
                                 .background(Color.white)
                                 .clipShape(Capsule())
                         })
-                        .padding(.leading)
+                        .padding(.leading, 30)
                         Spacer()
                     } else {
 
@@ -142,15 +141,14 @@ struct Camera: View {
 
         .alert(isPresented: $showSaveAlert) {
             Alert(
-                title: Text("Success"),
-                message: Text("Image saved successfully."),
+                title: Text("Éxito"),
+                message: Text("Imagen guardada con éxito"),
                 dismissButton: .default(Text("OK"), action: {
                     camera.isSaved = false
                 })
             )
         }
     }
-
 
     func saveImage(_ image: UIImage) {
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
@@ -259,16 +257,11 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
 
 
     func reTake() {
-        DispatchQueue.global(qos: .background).async {
-            if !self.session.isRunning {
-                self.session.startRunning()
+        DispatchQueue.main.async {
+            withAnimation {
+                self.isTaken = false
             }
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.isTaken = false
-                }
-                self.isSaved = false
-            }
+            self.isSaved = false
         }
     }
 
@@ -289,7 +282,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             withAnimation {
                 self.isTaken = true
             }
-            self.session.stopRunning()
+            //self.session.stopRunning()
         }
     }
 
@@ -386,7 +379,6 @@ struct PhotoPicker: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
-
     }
 
     func makeCoordinator() -> Coordinator {
@@ -399,7 +391,6 @@ struct PhotoPicker: UIViewControllerRepresentable {
         init(_ parent: PhotoPicker) {
             self.parent = parent
         }
-
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             parent.isPresented = false
@@ -419,4 +410,3 @@ struct PhotoPicker: UIViewControllerRepresentable {
         }
     }
 }
-
