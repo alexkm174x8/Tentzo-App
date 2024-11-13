@@ -10,5 +10,7 @@
 	<array>
 		<string>location</string>
 	</array>
+	<key>FirebaseCrashlyticsCollectionEnabled</key>
+	<false/>
 </dict>
 </plist>

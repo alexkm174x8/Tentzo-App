@@ -14,6 +14,7 @@ struct MapViewPreview: View {
     @StateObject private var viewModel = RouteViewModel()
     
     @State private var mapType: MKMapType = .hybrid
+    @State private var isFirstPersonViewEnabled = false // New state for first-person view
     
     var body: some View {
         ZStack {
@@ -28,7 +29,8 @@ struct MapViewPreview: View {
                     MapViewForRoute(
                         coordinates: viewModel.coordinates,
                         finishPoint: finishPoint,
-                        mapType: mapType
+                        mapType: mapType,
+                        isFirstPersonViewEnabled: isFirstPersonViewEnabled // Pass the state
                     )
                     .edgesIgnoringSafeArea(.all)
                 } else {
@@ -36,6 +38,22 @@ struct MapViewPreview: View {
                 }
             } else {
                 ProgressView("Cargando ruta...")
+            }
+            
+            VStack {
+                Spacer()
+                Button(action: {
+                    isFirstPersonViewEnabled.toggle() // Toggle first-person view when tapped
+                }) {
+                    Text(isFirstPersonViewEnabled ? "Stop First Person View" : "Start First Person View")
+                        .font(.title2)
+                        .bold()
+                        .foregroundColor(.white)
+                        .frame(width: 300, height: 50)
+                        .background(Color.blue.opacity(0.8))
+                        .cornerRadius(25)
+                }
+                .padding(.bottom, 50)
             }
         }
         .onAppear {

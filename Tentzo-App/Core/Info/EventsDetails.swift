@@ -17,7 +17,7 @@ struct EventsDetails: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 30)
                         .fill(Color.white)
-                        .frame(width: 405, height: 550)
+                        .frame(width: 420, height: 550)
                         .overlay(
                             
                             VStack(alignment: .leading, spacing: 20) {

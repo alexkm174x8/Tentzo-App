@@ -14,7 +14,6 @@ struct RouteDetails: View {
     
     var body: some View {
         ZStack {
-            // cambie imagen por el mapa
             ZStack(alignment: .top) {
                 MapViewPreview(id_ruta: id_ruta)
             }
@@ -41,6 +40,7 @@ struct RouteDetails: View {
                                             .foregroundColor(.black)
                                             .padding(.leading, 20)
                                     }
+                                    
                                     Spacer()
                                     
                                     VStack(alignment: .leading) {
@@ -118,4 +118,3 @@ struct RouteDetails: View {
         }
     }
 }
-

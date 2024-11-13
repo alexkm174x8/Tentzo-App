@@ -11,9 +11,7 @@ import MapKit
 struct MapViewContainer: View {
     var id_ruta: Int
     @StateObject private var viewModel = RouteViewModel()
-    @Environment(\.presentationMode) var presentationMode
-    
-    @State private var mapType: MKMapType = .hybrid
+    @State private var isFirstPersonViewEnabled = false
     
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -28,7 +26,7 @@ struct MapViewContainer: View {
                     MapViewForRoute(
                         coordinates: viewModel.coordinates,
                         finishPoint: finishPoint,
-                        mapType: mapType
+                        isFirstPersonViewEnabled: isFirstPersonViewEnabled // Pass the state
                     )
                     .edgesIgnoringSafeArea(.all)
                 } else {
@@ -38,21 +36,16 @@ struct MapViewContainer: View {
                 ProgressView("Cargando ruta...")
             }
             
-            VStack {
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image(systemName: "arrow.left.circle.fill")
-                            .foregroundColor(.green)
-                            .font(.system(size: 32))
-                            .padding()
-                            .background(Color.white.opacity(0.8))
-                            .clipShape(Circle())
-                    }
-                    Spacer()
-                }
-                Spacer()
+            Button(action: {
+                isFirstPersonViewEnabled.toggle() // Toggle first-person view
+            }) {
+                Text("Toggle First Person View")
+                    .font(.title3)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.blue.opacity(0.8))
+                    .cornerRadius(10)
             }
             .padding([.top, .leading], 20)
         }
