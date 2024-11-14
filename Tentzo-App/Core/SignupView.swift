@@ -67,7 +67,7 @@ struct SignupView: View {
                     SecureField("Contraseña", text: $password, onCommit: validatePassword)
                 }
                 Button(action: { showPassword.toggle() }) {
-                    Image(systemName: showPassword ? "eye.slash" : "eye")
+                    Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill")
                         .foregroundColor(.gray)
                 }
             }
