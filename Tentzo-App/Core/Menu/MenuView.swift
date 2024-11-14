@@ -43,7 +43,7 @@ struct MenuView: View {
             HStack(alignment: .center, spacing: 10) {
                 Text("Mis Insignias")
                     .bold()
-                    .font(.system(size: 23))
+                    .font(.system(size: 25))
                 VStack {
                     Divider()
                         .background(Color.gray)

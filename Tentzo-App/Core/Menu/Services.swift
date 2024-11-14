@@ -6,12 +6,12 @@ struct Services: View {
         VStack {
             Divider()
             VStack(alignment: .center) {
-                Text("Especie destacada")
-                    .fontWeight(.bold)
-                    .font(.system(size: 24))
+                Text("Especie Destacada")
+                    .bold()
+                    .font(.system(size: 25))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .multilineTextAlignment(.leading)
-                    .padding(.leading, 20)
+                    .padding(.leading, 14)
                 
                 Image("plantD")
                     .resizable()
