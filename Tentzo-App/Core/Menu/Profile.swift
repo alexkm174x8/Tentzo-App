@@ -74,22 +74,6 @@ struct Profile: View {
                             
                             Text("Mis puntos: 114")
                                 .foregroundStyle(.white)
-                            
-                            Button(action: {
-                                logOutUser()
-                            }) {
-                                Text("Cerrar Sesión")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 9)
-                                    .padding(.vertical, 7)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.white, lineWidth: 1)
-                                    )
-                            }
-                            .padding(.trailing, 50)
-                            .padding(.top, 6)
                         }
                         .padding(10)
                     }
@@ -183,16 +167,6 @@ struct Profile: View {
                     }.resume()
                 }
             }
-        }
-    }
-    
-    func logOutUser() { // Log out
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            userID = ""
-        } catch let signOutError as NSError {
-            print("Error signing out: \(signOutError.localizedDescription)")
         }
     }
 }
