@@ -3,12 +3,30 @@ import MapKit
 import Firebase
 import FirebaseFirestore
 
+struct OcoyucanView: View {
+    let region = MKCoordinateRegion(
+        // 18.9508169,-98.3177923
+        center: CLLocationCoordinate2D(latitude: 18.9508169, longitude: -98.3177923),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
+    
+    var body: some View {
+        MapViewRepresentable(isInteractionDisabled: false, region: region)
+            .frame(height: 300)
+    }
+}
+
+
 // For map lock
 struct MapViewRepresentable: UIViewRepresentable {
     var isInteractionDisabled: Bool
+    var region: MKCoordinateRegion
     
     func makeUIView(context: Context) -> MKMapView {
-        MKMapView()
+        let mapView = MKMapView()
+        mapView.mapType = .hybrid
+        mapView.setRegion(region, animated: false)
+        return mapView
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
@@ -16,6 +34,9 @@ struct MapViewRepresentable: UIViewRepresentable {
         uiView.isZoomEnabled = !isInteractionDisabled
         uiView.isRotateEnabled = !isInteractionDisabled
         uiView.isPitchEnabled = !isInteractionDisabled
+        
+        uiView.mapType = .hybrid
+        uiView.setRegion(region, animated: true)
     }
 }
 
@@ -51,10 +72,10 @@ struct RoutesListView: View {
             ForEach(routes) { route in
                 NavigationLink(destination: RouteDetails(
                     nombre: route.nombre,
-                        distancia: route.distancia,
-                        tiempo: route.tiempo,
-                        detalles: route.detalles,
-                        id_ruta: Int(route.id_ruta) ?? 0
+                    distancia: route.distancia,
+                    tiempo: route.tiempo,
+                    detalles: route.detalles,
+                    id_ruta: Int(route.id_ruta) ?? 0
                 )) {
                     RoutePreview(nombre: route.nombre, image: route.imagen)
                 }
@@ -65,6 +86,11 @@ struct RoutesListView: View {
 
 struct MapView: View {
     @StateObject private var viewModel = RoutesViewModel()
+    
+    let region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 18.9508169, longitude: -98.3177923),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
     
     struct Route: Identifiable {
         var id: String
@@ -82,7 +108,7 @@ struct MapView: View {
         NavigationStack {
             VStack {
                 ZStack(alignment: .bottom) {
-                    MapViewRepresentable(isInteractionDisabled: isExpanded)
+                    MapViewRepresentable(isInteractionDisabled: false, region: region)
                         .ignoresSafeArea(.container, edges: .top)
                     
                     VStack {
@@ -100,7 +126,7 @@ struct MapView: View {
                         viewModel.cargarProductosDesdeFirestore()
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
-                    .frame(height: isExpanded ? 700 : 152, alignment: .top)
+                    .frame(height: isExpanded ? 700 : 264, alignment: .top)
                     .background(.white)
                     .clipShape(RoundedCorner(radius: 25.0, corners: [.topLeft, .topRight]))
                     .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: -10)
@@ -184,4 +210,3 @@ class RoutesViewModel: ObservableObject {
 #Preview {
     MapView()
 }
-
