@@ -13,11 +13,15 @@ struct SignupView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @AppStorage("uid") var userID: String = ""  // UID del user
+    @State private var showPassword: Bool = false
+    @State private var showConfirmPassword: Bool = false
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    
+    @AppStorage("uid") var userID: String = ""  // UID del usuario
     @Binding var currentShowingView: String
     let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
-    
-    // UserService instance to handle Firestore document creation
+
     private let userService = UserService()
     
     var body: some View {
@@ -35,6 +39,9 @@ struct SignupView: View {
                 .padding(.bottom, 5)
             
             TextField("Nombre Completo", text: $fullName)
+                .onChange(of: fullName) { _ in
+                    capitalizeFullName()
+                }
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
@@ -43,7 +50,7 @@ struct SignupView: View {
                 .foregroundColor(.black)
                 .autocapitalization(.words)
             
-            TextField("Email", text: $email)
+            TextField("Email", text: $email, onCommit: validateEmail)
                 .autocapitalization(.none)
                 .keyboardType(.emailAddress)
                 .padding()
@@ -53,21 +60,41 @@ struct SignupView: View {
                 .padding(.top, 10)
                 .foregroundColor(.black)
             
-            SecureField("Contraseña", text: $password)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal, 25)
-                .padding(.top, 10)
-                .foregroundColor(.black)
+            HStack {
+                if showPassword {
+                    TextField("Contraseña", text: $password, onCommit: validatePassword)
+                } else {
+                    SecureField("Contraseña", text: $password, onCommit: validatePassword)
+                }
+                Button(action: { showPassword.toggle() }) {
+                    Image(systemName: showPassword ? "eye.slash" : "eye")
+                        .foregroundColor(.gray)
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            .padding(.horizontal, 25)
+            .padding(.top, 10)
+            .foregroundColor(.black)
             
-            SecureField("Repetir Contraseña", text: $confirmPassword)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal, 25)
-                .padding(.top, 10)
-                .foregroundColor(.black)
+            HStack {
+                if showConfirmPassword {
+                    TextField("Repetir Contraseña", text: $confirmPassword, onCommit: checkPasswordMatch)
+                } else {
+                    SecureField("Repetir Contraseña", text: $confirmPassword, onCommit: checkPasswordMatch)
+                }
+                Button(action: { showConfirmPassword.toggle() }) {
+                    Image(systemName: showConfirmPassword ? "eye.slash" : "eye")
+                        .foregroundColor(.gray)
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            .padding(.horizontal, 25)
+            .padding(.top, 10)
+            .foregroundColor(.black)
             
             Button(action: {
                 signUpUser()
@@ -107,50 +134,70 @@ struct SignupView: View {
                 .padding(.bottom, 10)
             
             Button(action: {
-                // aqui lo de google
             }) {
                 Image("google")
                     .resizable()
                     .frame(width: 40, height: 40)
             }
             .padding(.bottom, 60)
-            
         }
         .padding(.top, 40)
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
         .preferredColorScheme(.light)
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
-    // MARK: - Helper Methods
+    
+    private func capitalizeFullName() {
+        fullName = fullName.capitalized
+    }
+    
+    private func validateEmail() {
+        let emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let regex = try? NSRegularExpression(pattern: emailPattern)
+        let matches = regex?.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count))
+        if matches == nil {
+            alertMessage = "Por favor, introduce un correo electrónico válido."
+            showAlert = true
+        }
+    }
+    
+    private func validatePassword() {
+        if password.count < 6 {
+            alertMessage = "La contraseña debe tener al menos 6 caracteres."
+            showAlert = true
+        }
+    }
+    
+    private func checkPasswordMatch() {
+        if password != confirmPassword {
+            alertMessage = "Las contraseñas no coinciden."
+            showAlert = true
+        }
+    }
     
     private func signUpUser() {
         guard password == confirmPassword else {
-            print("Las contraseñas no coinciden.")
+            alertMessage = "Las contraseñas no coinciden."
+            showAlert = true
             return
         }
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
-                print("Error al crear la cuenta: \(error.localizedDescription)")
+                alertMessage = "Error al crear la cuenta: \(error.localizedDescription)"
+                showAlert = true
             } else if let user = authResult?.user {
-                userID = user.uid // Store the user's UID
-                print("Cuenta creada exitosamente, UID: \(user.uid)")
-                
-                // Call UserService to create Firestore document for the new user
+                userID = user.uid
                 userService.createUserDocument(user: user, fullName: fullName)
                 
-                // Navigate to login view or main screen
                 withAnimation {
                     currentShowingView = "login"
                 }
             }
         }
-    }
-}
-
-struct SignupView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignupView(currentShowingView: .constant("signup"))
     }
 }
