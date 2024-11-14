@@ -6,6 +6,7 @@ import FirebaseAuth
 struct InfoView: View {
     @StateObject private var viewModel = ActividadViewModel()
     @AppStorage("uid") var userID: String = ""
+    @State private var showLogoutConfirmation = false // State to control the display of the confirmation alert
     
     struct Actividad: Identifiable {
         var id: String
@@ -72,7 +73,9 @@ struct InfoView: View {
                 
                 Spacer()
                 
-                Button(action: logout) {
+                Button(action: {
+                    showLogoutConfirmation = true // Show the confirmation alert when button is clicked
+                }) {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right")
                             .resizable()
@@ -92,6 +95,14 @@ struct InfoView: View {
                     )
                 }
                 .padding()
+                .alert(isPresented: $showLogoutConfirmation) {
+                    Alert(
+                        title: Text("Confirmación"),
+                        message: Text("¿Estás seguro de que quieres cerrar sesión?"),
+                        primaryButton: .destructive(Text("Cerrar Sesión"), action: logOutUser),
+                        secondaryButton: .cancel(Text("Cancelar"))
+                    )
+                }
             }
             .onAppear {
                 viewModel.cargarProductosDesdeFirestore()
@@ -110,10 +121,6 @@ struct InfoView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 70)
             }
-    }
-    
-    private func logout() {
-        logOutUser()
     }
     
     private func logOutUser() {
