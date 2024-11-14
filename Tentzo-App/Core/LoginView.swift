@@ -6,6 +6,9 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var showPassword: Bool = false
     @State private var isLoading: Bool = false
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    
     @AppStorage("uid") var userID: String = ""
     @Binding var currentShowingView: String
     let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
@@ -48,6 +51,9 @@ struct LoginView: View {
                     .onChange(of: email) { newValue in
                         email = newValue.lowercased()
                     }
+                    .onSubmit {
+                        validateEmail()
+                    }
                 
                 HStack {
                     if showPassword {
@@ -76,6 +82,8 @@ struct LoginView: View {
                         .padding()
                 } else {
                     Button(action: {
+                        validateEmail()
+                        logInUser()
                     }) {
                         Text("Iniciar Sesión")
                             .fontWeight(.bold)
@@ -88,6 +96,9 @@ struct LoginView: View {
                             .font(.system(size: 20))
                     }
                     .padding(.top, 20)
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                    }
                 }
                 
                 Spacer()
@@ -108,9 +119,41 @@ struct LoginView: View {
         }
     }
     
-    struct LoginView_Previews: PreviewProvider {
-        static var previews: some View {
-            LoginView(currentShowingView: .constant("login"))
+    private func validateEmail() {
+        let emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let regex = try? NSRegularExpression(pattern: emailPattern)
+        let matches = regex?.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count))
+        if matches == nil {
+            alertMessage = "Por favor, introduce un correo electrónico válido."
+            showAlert = true
+        }
+    }
+    
+    private func logInUser() {
+        guard !email.isEmpty && !password.isEmpty else {
+            alertMessage = "El correo y la contraseña son obligatorios."
+            showAlert = true
+            return
+        }
+        
+        isLoading = true
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            isLoading = false
+            if let error = error {
+                alertMessage = "Correo o contraseña incorrectos. Intenta de nuevo."
+                showAlert = true
+                print("Login error: \(error.localizedDescription)")
+            } else if let user = authResult?.user {
+                userID = user.uid
+                print("Inicio de sesión exitoso, UID: \(user.uid)")
+            }
         }
     }
 }
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView(currentShowingView: .constant("login"))
+    }
+}
+
