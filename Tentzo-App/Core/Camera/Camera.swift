@@ -54,12 +54,12 @@ struct Camera: View {
                 title: Text("Éxito"),
                 message: Text("Imagen guardada con éxito."),
                 dismissButton: .default(Text("OK"), action: {
-                    camera.isSaved = false
+                    camera.isSaved = true
                 })
             )
         }
     }
-
+    
     private func topBar() -> some View {
         HStack {
             if camera.isTaken || selectedImage != nil {
@@ -83,19 +83,34 @@ struct Camera: View {
             Spacer()
         }
     }
-
+    
     private func bottomBar() -> some View {
         HStack {
-            if camera.isTaken || selectedImage != nil {
+            if selectedImage != nil {
+                Button(action: {
+                    // aqui poner funcionalidad del escaneo
+                }, label: {
+                    HStack {
+                        Image(systemName: "doc.text.viewfinder")
+                            .foregroundColor(.black)
+                        Text("Escanear")
+                            .foregroundColor(.black)
+                            .fontWeight(.semibold)
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 20)
+                    .background(Color.white)
+                    .clipShape(Capsule())
+                })
+                .padding(.leading, 25)
+                
+                Spacer()
+            } else if camera.isTaken && camera.isPhotoFromCamera {
                 Button(action: {
                     if !camera.isSaved {
-                        if let imageToSave = selectedImage {
-                            saveImage(imageToSave, camera: camera)
-                        } else {
-                            camera.savePic { success in
-                                if success {
-                                    showSaveAlert = true
-                                }
+                        camera.savePic { success in
+                            if success {
+                                showSaveAlert = true
                             }
                         }
                     }
@@ -115,7 +130,7 @@ struct Camera: View {
                 .padding(.leading, 25)
                 
                 Button(action: {
-                    // Placeholder for scan functionality
+                    // aqui poner la funcionalidad del escaneo
                 }, label: {
                     HStack {
                         Image(systemName: "doc.text.viewfinder")
@@ -156,12 +171,19 @@ struct Camera: View {
                 .padding(.leading)
                 .sheet(isPresented: $showPhotoPicker) {
                     PhotoPicker(selectedImage: $selectedImage, isPresented: $showPhotoPicker)
+                        .onChange(of: selectedImage) { newImage in
+                            if newImage != nil {
+                                camera.isTaken = true
+                                camera.isPhotoFromCamera = false
+                                camera.isSaved = false
+                            }
+                        }
                 }
             }
         }
         .frame(height: 75)
     }
-
+    
     func saveImage(_ image: UIImage, camera: CamModel) {
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
             if status == .authorized || status == .limited {
