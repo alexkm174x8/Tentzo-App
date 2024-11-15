@@ -7,13 +7,163 @@
 
 import SwiftUI
 import Photos
+import Foundation
+
+struct PlantIdentificationResponse: Codable {
+    struct Result: Codable {
+        struct Classification: Codable {
+            struct Suggestion: Codable {
+                let name: String
+            }
+            let suggestions: [Suggestion]
+        }
+        let classification: Classification
+    }
+    let result: Result
+}
+
+// Plant Identification Service
+class PlantIdentificationService: ObservableObject {
+    @Published var identifiedPlantName: String?
+    @Published var error: String?
+    
+    func identifyPlant(imageBase64: String, latitude: Double? = nil, longitude: Double? = nil, apiKey: String) {
+        let url = URL(string: "https://plant.id/api/v3/identification")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue(apiKey, forHTTPHeaderField: "Api-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Prepare request body
+        var bodyDict: [String: Any] = [
+            "images": ["data:image/jpg;base64,\(imageBase64)"],
+            "similar_images": true
+        ]
+        
+        if let latitude = latitude, let longitude = longitude {
+            bodyDict["latitude"] = latitude
+            bodyDict["longitude"] = longitude
+        }
+        
+        // Convert dictionary to JSON data
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyDict)
+        } catch {
+            DispatchQueue.main.async {
+                self.error = "Error preparing request: \(error.localizedDescription)"
+            }
+            return
+        }
+        
+        // Make the network request
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                print("Network error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self?.error = "Network error: \(error.localizedDescription)"
+                }
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                DispatchQueue.main.async {
+                    self?.error = "Invalid response"
+                }
+                return
+            }
+            
+            print("HTTP Status Code: \(httpResponse.statusCode)")
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print("Server error: \(httpResponse.statusCode)")
+                if let data = data,
+                   let errorJson = try? JSONSerialization.jsonObject(with: data) {
+                    print("Error Response: \(errorJson)")
+                }
+                DispatchQueue.main.async {
+                    self?.error = "Server error: \(httpResponse.statusCode)"
+                }
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                DispatchQueue.main.async {
+                    self?.error = "No data received"
+                }
+                return
+            }
+            
+            // Print raw response data
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw API Response:")
+                print(jsonString)
+            }
+            
+            // Pretty print the JSON response
+            if let jsonObject = try? JSONSerialization.jsonObject(with: data),
+               let prettyData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted),
+               let prettyString = String(data: prettyData, encoding: .utf8) {
+                print("\nFormatted API Response:")
+                print(prettyString)
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let response = try decoder.decode(PlantIdentificationResponse.self, from: data)
+                
+                if let firstSuggestion = response.result.classification.suggestions.first {
+                    print("\nFirst Plant Suggestion: \(firstSuggestion.name)")
+                    DispatchQueue.main.async {
+                        self?.identifiedPlantName = firstSuggestion.name
+                    }
+                } else {
+                    print("No plant suggestions found in the response")
+                    DispatchQueue.main.async {
+                        self?.error = "No plant suggestions found"
+                    }
+                }
+                
+                // Print all suggestions
+                print("\nAll Suggestions:")
+                response.result.classification.suggestions.forEach { suggestion in
+                    print("- \(suggestion.name)")
+                }
+                
+            } catch {
+                print("Decoding error: \(error.localizedDescription)")
+                print("JSON Decoding Error Details: \(error)")
+                DispatchQueue.main.async {
+                    self?.error = "Decoding error: \(error.localizedDescription)"
+                }
+            }
+        }
+        
+        task.resume()
+    }
+}
 
 struct Camera: View {
     @StateObject var camera = CamModel()
+    @StateObject private var plantService = PlantIdentificationService()
     @State private var showSaveAlert = false
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage?
-
+    @State private var showPlantAlert = false
+    
+    // API Key for Plant.id service
+    private let apiKey = "0B3G3gYo0gziMjliprpRFc5XVB2EbG9swngse8W4ZbnKOdNUOu" // Replace with your actual API key
+    
+    func convertImageToBase64(_ image: UIImage) -> String? {
+        guard let imageData = image.jpegData(compressionQuality: 1.0) else { return nil }
+        return imageData.base64EncodedString()
+    }
+    
+    func convertDataToBase64(_ data: Data) -> String {
+        return data.base64EncodedString()
+    }
+    
     var body: some View {
         ZStack {
             CameraPreview(camera: camera)
@@ -35,6 +185,16 @@ struct Camera: View {
 
             VStack {
                 topBar()
+                
+                // Plant Identification Results
+                if let plantName = plantService.identifiedPlantName {
+                    Text("Identified Plant: \(plantName)")
+                        .padding()
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(10)
+                        .padding()
+                }
+                
                 Spacer()
                 bottomBar()
             }
@@ -49,18 +209,19 @@ struct Camera: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .alert(isPresented: $showSaveAlert) {
-            Alert(
-                title: Text("Éxito"),
-                message: Text("Imagen guardada con éxito."),
-                dismissButton: .default(Text("OK"), action: {
-                    camera.isSaved = true
-                })
-            )
+        .alert("Plant Identification Result", isPresented: $showPlantAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            if let plantName = plantService.identifiedPlantName {
+                Text("Identified as: \(plantName)")
+            } else if let error = plantService.error {
+                Text("Error: \(error)")
+            }
         }
     }
-    
+
     private func topBar() -> some View {
+        // Your existing topBar implementation
         HStack {
             if camera.isTaken || selectedImage != nil {
                 Button(action: {
@@ -88,7 +249,11 @@ struct Camera: View {
         HStack {
             if selectedImage != nil {
                 Button(action: {
-                    // aqui poner funcionalidad del escaneo
+                    if let image = selectedImage,
+                       let base64String = convertImageToBase64(image) {
+                        plantService.identifyPlant(imageBase64: base64String, apiKey: apiKey)
+                        showPlantAlert = true
+                    }
                 }, label: {
                     HStack {
                         Image(systemName: "doc.text.viewfinder")
@@ -130,7 +295,9 @@ struct Camera: View {
                 .padding(.leading, 25)
                 
                 Button(action: {
-                    // aqui poner la funcionalidad del escaneo
+                    let base64String = convertDataToBase64(camera.picData)
+                    plantService.identifyPlant(imageBase64: base64String, apiKey: apiKey)
+                    showPlantAlert = true
                 }, label: {
                     HStack {
                         Image(systemName: "doc.text.viewfinder")
