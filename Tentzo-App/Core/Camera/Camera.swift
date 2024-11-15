@@ -8,6 +8,7 @@
 import SwiftUI
 import Photos
 import Foundation
+import AVFoundation
 
 struct PlantIdentificationResponse: Codable {
     struct Result: Codable {
@@ -22,7 +23,6 @@ struct PlantIdentificationResponse: Codable {
     let result: Result
 }
 
-// Plant Identification Service
 class PlantIdentificationService: ObservableObject {
     @Published var identifiedPlantName: String?
     @Published var error: String?
@@ -151,40 +151,57 @@ struct Camera: View {
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage?
     @State private var showPlantAlert = false
+    let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
+
     
     // API Key for Plant.id service
     private let apiKey = "0B3G3gYo0gziMjliprpRFc5XVB2EbG9swngse8W4ZbnKOdNUOu" // Replace with your actual API key
     
+    private let cameraFrameHeight: CGFloat = 805
+    
+    // Function to convert UIImage to Base64 string
     func convertImageToBase64(_ image: UIImage) -> String? {
         guard let imageData = image.jpegData(compressionQuality: 1.0) else { return nil }
         return imageData.base64EncodedString()
     }
     
+    // Function to convert Data to Base64 string
     func convertDataToBase64(_ data: Data) -> String {
         return data.base64EncodedString()
     }
     
     var body: some View {
-        ZStack {
-            CameraPreview(camera: camera)
-                .ignoresSafeArea(.all, edges: .all)
-                .opacity((camera.isTaken || selectedImage != nil) ? 0 : 1)
-            
-            if camera.isTaken && selectedImage == nil {
-                ImageView(imageData: camera.picData)
-                    .transition(.opacity)
-            }
-            
-            if let image = selectedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .ignoresSafeArea(.all, edges: .all)
-                    .transition(.opacity)
-            }
-
-            VStack {
-                topBar()
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                ZStack {
+                    CameraPreview(camera: camera)
+                        .frame(width: geometry.size.width, height: cameraFrameHeight)
+                        .clipped()
+                        .opacity((camera.isTaken || selectedImage != nil) ? 0 : 1)
+                        .ignoresSafeArea(edges: .top)
+                    
+                    if camera.isTaken && selectedImage == nil {
+                        ImageView(imageData: camera.picData)
+                            .frame(width: geometry.size.width, height: cameraFrameHeight)
+                            .clipped()
+                            .transition(.opacity)
+                            .opacity(camera.isTaken ? 1 : 0)
+                            .ignoresSafeArea(edges: .top)
+                    }
+                    
+                    if let image = selectedImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: geometry.size.width, height: cameraFrameHeight)
+                            .clipped()
+                            .transition(.opacity)
+                            .opacity(selectedImage != nil ? 1 : 0)
+                            .ignoresSafeArea(edges: .top)
+                    }
+                }
+                .frame(width: geometry.size.width, height: cameraFrameHeight, alignment: .top)
+                .position(x: geometry.size.width / 2, y: cameraFrameHeight / 2)
                 
                 // Plant Identification Results
                 if let plantName = plantService.identifiedPlantName {
@@ -192,50 +209,69 @@ struct Camera: View {
                         .padding()
                         .background(Color.white.opacity(0.8))
                         .cornerRadius(10)
+                        .padding(.top, 20)
+                } else if let error = plantService.error {
+                    Text("Error: \(error)")
                         .padding()
+                        .background(Color.red.opacity(0.8))
+                        .cornerRadius(10)
+                        .padding(.top, 20)
                 }
                 
                 Spacer()
+                
                 bottomBar()
+                    .frame(height: 75)
             }
-        }
-        .onAppear {
-            camera.check()
-        }
-        .alert(isPresented: $camera.alert) {
-            Alert(
-                title: Text("Permiso denegado"),
-                message: Text("Por favor permita el acceso a la cámara y a la biblioteca de fotos en la configuración."),
-                dismissButton: .default(Text("OK"))
+            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .top)
+            .ignoresSafeArea(edges: .top)
+            .overlay(
+                topBar()
+                    .frame(width: geometry.size.width, alignment: .leading)
+                    .padding(.top, 20)
+                , alignment: .top
             )
-        }
-        .alert("Plant Identification Result", isPresented: $showPlantAlert) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            if let plantName = plantService.identifiedPlantName {
-                Text("Identified as: \(plantName)")
-            } else if let error = plantService.error {
-                Text("Error: \(error)")
+            .onAppear {
+                camera.check()
+            }
+            .alert(isPresented: $camera.alert) {
+                Alert(
+                    title: Text("Permission Denied"),
+                    message: Text("Please allow access to the camera and photo library in settings."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .alert("Plant Identification Result", isPresented: $showPlantAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                if let plantName = plantService.identifiedPlantName {
+                    Text("Identified as: \(plantName)")
+                } else if let error = plantService.error {
+                    Text("Error: \(error)")
+                }
             }
         }
     }
-
+    
     private func topBar() -> some View {
-        // Your existing topBar implementation
         HStack {
             if camera.isTaken || selectedImage != nil {
                 Button(action: {
                     if selectedImage != nil {
                         selectedImage = nil
                         camera.isSaved = false
+                        plantService.identifiedPlantName = nil
+                        plantService.error = nil
                     } else {
                         camera.reTake()
+                        plantService.identifiedPlantName = nil
+                        plantService.error = nil
                     }
                 }, label: {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
-                        .background(Color.white)
+                        .foregroundColor(customGreen)
                         .clipShape(Circle())
                 })
                 .padding(.leading, 25)
@@ -244,6 +280,7 @@ struct Camera: View {
             Spacer()
         }
     }
+    
     
     private func bottomBar() -> some View {
         HStack {
@@ -258,7 +295,7 @@ struct Camera: View {
                     HStack {
                         Image(systemName: "doc.text.viewfinder")
                             .foregroundColor(.black)
-                        Text("Escanear")
+                        Text("Scan")
                             .foregroundColor(.black)
                             .fontWeight(.semibold)
                     }
@@ -282,17 +319,18 @@ struct Camera: View {
                 }, label: {
                     HStack {
                         Image(systemName: camera.isSaved ? "checkmark.circle" : "square.and.arrow.down")
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                         Text(camera.isSaved ? "Guardada" : "Guardar")
-                            .foregroundColor(.black)
                             .fontWeight(.semibold)
+                            .foregroundColor(.white)
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
-                    .background(Color.white)
+                    .background(customGreen)
                     .clipShape(Capsule())
                 })
                 .padding(.leading, 25)
+                .padding(.top, 50)
                 
                 Button(action: {
                     let base64String = convertDataToBase64(camera.picData)
@@ -301,17 +339,19 @@ struct Camera: View {
                 }, label: {
                     HStack {
                         Image(systemName: "doc.text.viewfinder")
-                            .foregroundColor(.black)
-                        Text("Escanear")
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
+                        Text("Identificar")
+                            .foregroundColor(.white)
                             .fontWeight(.semibold)
+                            .foregroundColor(.white)
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
-                    .background(Color.white)
+                    .background(customGreen)
                     .clipShape(Capsule())
                 })
                 .padding(.leading, 10)
+                .padding(.top, 50)
                 
                 Spacer()
             } else {
@@ -330,9 +370,9 @@ struct Camera: View {
                     showPhotoPicker = true
                 }, label: {
                     Image(systemName: "photo.on.rectangle")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
-                        .background(Color.white)
+                        .background(customGreen)
                         .clipShape(Circle())
                 })
                 .padding(.leading)
@@ -373,5 +413,11 @@ struct Camera: View {
                 }
             }
         }
+    }
+}
+
+struct Camera_Previews: PreviewProvider {
+    static var previews: some View {
+        Camera()
     }
 }
