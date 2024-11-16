@@ -205,11 +205,13 @@ struct Camera: View {
                 
                 // Plant Identification Results
                 if let plantName = plantService.identifiedPlantName {
-                    Text("Identified Plant: \(plantName)")
+                    Text("Especie Identificada: \(plantName)")
                         .padding()
-                        .background(Color.white.opacity(0.8))
+                        .foregroundColor(.white)
+                        .background(Color(red: 83/255, green: 135/255, blue: 87/255))
                         .cornerRadius(10)
                         .padding(.top, 20)
+                    
                 } else if let error = plantService.error {
                     Text("Error: \(error)")
                         .padding()
@@ -241,15 +243,6 @@ struct Camera: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
-            .alert("Plant Identification Result", isPresented: $showPlantAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                if let plantName = plantService.identifiedPlantName {
-                    Text("Identified as: \(plantName)")
-                } else if let error = plantService.error {
-                    Text("Error: \(error)")
-                }
-            }
         }
     }
     
@@ -268,13 +261,15 @@ struct Camera: View {
                         plantService.error = nil
                     }
                 }, label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.white)
-                        .padding()
+                    Image(systemName: "chevron.left.circle.fill")
+                        .resizable()
+                        .frame(width: 40, height: 40) // Adjust size as needed
                         .foregroundColor(customGreen)
+                        .padding()
                         .clipShape(Circle())
+
                 })
-                .padding(.leading, 25)
+                .padding(.leading, 8)
                 .transition(.move(edge: .leading))
             }
             Spacer()
@@ -293,17 +288,21 @@ struct Camera: View {
                     }
                 }, label: {
                     HStack {
-                        Image(systemName: "doc.text.viewfinder")
-                            .foregroundColor(.black)
-                        Text("Scan")
-                            .foregroundColor(.black)
+                        Image(systemName: "qrcode.viewfinder")
+                            .foregroundColor(.white)
+
+                        Text("Identificar")
+                            .foregroundColor(.white)
                             .fontWeight(.semibold)
+                            .cornerRadius(10)
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
-                    .background(Color.white)
-                    .clipShape(Capsule())
+                    .foregroundColor(.white)
+                    .background(Color(red: 127/255, green: 194/255, blue: 151/255))
                 })
+                .clipShape(Capsule())
+                .padding(.top, 50)
                 .padding(.leading, 25)
                 
                 Spacer()
@@ -338,18 +337,20 @@ struct Camera: View {
                     showPlantAlert = true
                 }, label: {
                     HStack {
-                        Image(systemName: "doc.text.viewfinder")
+                        Image(systemName: "qrcode.viewfinder")
                             .foregroundColor(.white)
                         Text("Identificar")
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .background(Color(red: 127/255, green: 194/255, blue: 151/255))
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
                     .background(customGreen)
-                    .clipShape(Capsule())
+                    .foregroundColor(.white)
                 })
+                .clipShape(Capsule())
                 .padding(.leading, 10)
                 .padding(.top, 50)
                 

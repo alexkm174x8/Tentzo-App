@@ -59,10 +59,44 @@ struct PlantDetails: View {
                                 .frame(alignment: .leading)
                                 .padding(.leading, 20)
                                 
-                                ScrollView {
+                                //ScrollView {
                                     VStack(alignment: .leading) {
                                         VStack(alignment: .leading) {
-                                            Text("Descripcion")
+                                            Text("Familia")
+                                                .font(.system(size: 20))
+                                                .fontWeight(.semibold)
+                                                .foregroundColor(.black)
+                                                .padding(.leading, 5)
+                                                .padding(.trailing, 5)
+                                                .padding(.top, 0)
+
+                                            Text(familia)
+                                                .font(.system(size: 18))
+                                                .foregroundColor(.black)
+                                                .multilineTextAlignment(.leading)
+                                                .lineLimit(nil)
+                                                .padding(.leading, 5)
+                                                .padding(.trailing, 5)
+                                                .padding(.bottom, 10)
+                                            
+                                            Text("Género")
+                                                .font(.system(size: 20))
+                                                .fontWeight(.semibold)
+                                                .foregroundColor(.black)
+                                                .padding(.leading, 5)
+                                                .padding(.trailing, 5)
+                                                .padding(.top, 0)
+
+                                            Text(genero)
+                                                .font(.system(size: 18))
+                                                .foregroundColor(.black)
+                                                .multilineTextAlignment(.leading)
+                                                .lineLimit(nil)
+                                                .padding(.leading, 5)
+                                                .padding(.trailing, 5)
+                                                .padding(.bottom, 10)
+                                        
+                                            Text("Descripción")
                                                 .font(.system(size: 20))
                                                 .fontWeight(.semibold)
                                                 .foregroundColor(.black)
@@ -77,11 +111,13 @@ struct PlantDetails: View {
                                                 .lineLimit(nil)
                                                 .padding(.leading, 5)
                                                 .padding(.trailing, 5)
+                                                .padding(.bottom, 10)
+                                        
                                         }
                                     }
                                     .padding(.horizontal)
-                                }
-                                .frame(maxHeight: 300)
+                                //}
+                                //.frame(maxHeight: 300)
                                 
                                 Spacer()
                             }
