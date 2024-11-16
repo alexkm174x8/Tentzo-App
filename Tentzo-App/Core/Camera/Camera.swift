@@ -151,7 +151,7 @@ struct Camera: View {
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage?
     @State private var showPlantAlert = false
-    let customGreen = Color(red: 127 / 255, green: 194 / 255, blue: 151 / 255)
+    let customGreen = Color(red: 83/255, green: 135/255, blue: 87/255)
 
     
     // API Key for Plant.id service
@@ -264,7 +264,7 @@ struct Camera: View {
                     Image(systemName: "chevron.left.circle.fill")
                         .resizable()
                         .frame(width: 40, height: 40) // Adjust size as needed
-                        .foregroundColor(customGreen)
+                        .foregroundColor(.white)
                         .padding()
                         .clipShape(Circle())
 
@@ -299,7 +299,7 @@ struct Camera: View {
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
                     .foregroundColor(.white)
-                    .background(Color(red: 127/255, green: 194/255, blue: 151/255))
+                    .background(Color(red: 83/255, green: 135/255, blue: 87/255))
                 })
                 .clipShape(Capsule())
                 .padding(.top, 50)
@@ -343,7 +343,7 @@ struct Camera: View {
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                             .cornerRadius(10)
-                            .background(Color(red: 127/255, green: 194/255, blue: 151/255))
+                            .background(Color(red: 83/255, green: 135/255, blue: 87/255))
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)

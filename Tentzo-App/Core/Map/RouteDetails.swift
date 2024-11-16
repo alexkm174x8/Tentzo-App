@@ -72,7 +72,6 @@ struct RouteDetails: View {
                                             .font(.system(size: 20))
                                             .fontWeight(.semibold)
                                             .foregroundColor(.black)
-                                            .padding(.top, 10)
                                             .padding(.leading, 5)
                                             .padding(.trailing, 5)
                                         
@@ -94,12 +93,12 @@ struct RouteDetails: View {
                                     Button(action: {
                                         self.showMapView = true
                                     }) {
-                                        Text("Iniciar ruta")
+                                        Text("Abrir ruta")
                                             .font(.title2)
                                             .bold()
                                             .foregroundColor(.white)
                                             .frame(width: 300, height: 50)
-                                            .background(Color(red: 127/255, green: 194/255, blue: 151/255))
+                                            .background(Color(red: 83/255, green: 135/255, blue: 87/255))
                                             .cornerRadius(25)
                                     }
                                     Spacer()

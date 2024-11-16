@@ -21,8 +21,10 @@ struct RoutePreview: View {
             }
             .frame(width: 375 ,height: 100)
             .clipShape(RoundedRectangle(cornerRadius: 30))
-            .shadow(radius: 5)
             .overlay{
+                RoundedRectangle(cornerRadius: 30)
+                    .fill(LinearGradient(gradient: Gradient(colors: [Color(red: 44/255, green: 85/255, blue: 48/255), Color.clear]), startPoint: .bottom, endPoint: .top))
+                
                 Text(nombre)
                     .foregroundStyle(.white)
                     .bold()

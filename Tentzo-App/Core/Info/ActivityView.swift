@@ -9,12 +9,11 @@ struct ActivityPreview: View {
             AsyncImageView(url: image) // Usamos AsyncImageView aquí
                 .overlay {
                     Rectangle()
-                        .fill(LinearGradient(gradient: Gradient(colors: [Color.gray, Color.clear]), startPoint: .bottom, endPoint: .top))
+                        .fill(LinearGradient(gradient: Gradient(colors: [Color(red: 44/255, green: 85/255, blue: 48/255), Color.clear]), startPoint: .bottom, endPoint: .top))
                 }
         }
         .frame(width: 375, height: 120)
         .clipShape(RoundedRectangle(cornerRadius: 30))
-        .shadow(radius: 5)
         .overlay {
             Text(nombre)
                 .foregroundStyle(.white)

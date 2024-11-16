@@ -53,7 +53,7 @@ struct InfoView: View {
                 ScrollView {
                     if viewModel.actividades.isEmpty {
                         Text("Cargando actividades...")
-                            .foregroundColor(.gray)
+                            //.foregroundColor(.gray)
                         Spacer()
                     } else {
                         ForEach(viewModel.actividades) { actividad in
@@ -114,7 +114,7 @@ struct InfoView: View {
         RoundedRectangle(cornerRadius: 30)
             .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 10)
             .frame(width: 100, height: 100)
-            .foregroundStyle(Color(red: 233/255, green: 244/255, blue: 202/255))
+            .foregroundStyle(Color(red: 166/255, green: 206/255, blue: 181/255))
             .overlay {
                 Image(imageName)
                     .resizable()

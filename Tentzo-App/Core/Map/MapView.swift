@@ -53,10 +53,11 @@ struct MapViewHeader: View {
             
             HStack(alignment: .top) {
                 Image(systemName: "map.fill")
-                    .foregroundStyle(.green)
+                    .foregroundStyle(Color(red: 83/255, green: 135/255, blue: 87/255))
                 Text("Rutas")
-                    .font(.headline)
-                    .foregroundStyle(.green)
+                    .bold()
+                    .font(.system(size: 20))
+                    .foregroundStyle(Color(red: 83/255, green: 135/255, blue: 87/255))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 15)

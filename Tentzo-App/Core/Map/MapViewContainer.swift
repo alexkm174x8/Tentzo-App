@@ -39,15 +39,16 @@ struct MapViewContainer: View {
             Button(action: {
                 isFirstPersonViewEnabled.toggle() // Toggle first-person view
             }) {
-                Text("Toggle First Person View")
+                Text("Iniciar ruta")
                     .font(.title3)
                     .bold()
                     .foregroundColor(.white)
                     .padding()
-                    .background(Color.blue.opacity(0.8))
+                    .background(Color(red: 127/255, green: 194/255, blue: 151/255))
                     .cornerRadius(10)
             }
-            .padding([.top, .leading], 20)
+            .padding(.leading, 260)
+            .padding(.top, 750)
         }
         .onAppear {
             viewModel.fetchCoordinates(for: id_ruta)

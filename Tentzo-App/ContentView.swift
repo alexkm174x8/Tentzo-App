@@ -20,24 +20,24 @@ struct ContentView: View {
                 MenuView()
                     .tabItem {
                         Image(systemName: "house")
-                        Text("Home")
+                        Text("Inicio")
                     }
                 LibraryView()
                     .tabItem {
                         Image(systemName: "leaf.fill")
-                        Text("Library")
+                        Text("Biblioteca")
                     }
                 
                 CameraView()
                     .tabItem {
-                        Image(systemName: "camera")
-                        Text("Camera")
+                        Image(systemName: "qrcode.viewfinder")
+                        Text("Identificar")
                     }
                 
                 MapView()
                     .tabItem {
                         Image(systemName: "map")
-                        Text("Map")
+                        Text("Rutas")
                     }
                 
                 InfoView()
@@ -46,7 +46,7 @@ struct ContentView: View {
                         Text("Info")
                     }
             }
-            .accentColor(.green)
+            .accentColor(Color(red: 83/255, green: 135/255, blue: 87/255))
         }
     }
 }
