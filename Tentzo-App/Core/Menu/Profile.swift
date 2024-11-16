@@ -65,15 +65,15 @@ struct Profile: View {
                                     .foregroundStyle(.white)
                             }
                             
-                            HStack {
-                                Image(systemName: "location.fill")
-                                    .foregroundStyle(.white)
-                                Text("Ubicación")
-                                    .foregroundStyle(.white)
-                            }
+                            //HStack {
+                                //Image(systemName: "location.fill")
+                                   // .foregroundStyle(.white)
+                                //Text("Ubicación")
+                                  //  .foregroundStyle(.white)
+                           // }
                             
-                            Text("Mis puntos: 114")
-                                .foregroundStyle(.white)
+                            //Text("Mis puntos: 114")
+                              //  .foregroundStyle(.white)
                         }
                         .padding(10)
                     }
