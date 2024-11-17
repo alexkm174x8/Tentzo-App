@@ -23,7 +23,8 @@ struct Profile: View {
     @State private var firstName: String = "Tú"
     @State private var profileImage: UIImage?
     @State private var isImagePickerPresented = false
-
+    @State private var points: Int = 0
+    
     var body: some View {
         VStack {
             Rectangle()
@@ -65,15 +66,8 @@ struct Profile: View {
                                     .foregroundStyle(.white)
                             }
                             
-                            //HStack {
-                                //Image(systemName: "location.fill")
-                                   // .foregroundStyle(.white)
-                                //Text("Ubicación")
-                                  //  .foregroundStyle(.white)
-                           // }
-                            
-                            //Text("Mis puntos: 114")
-                              //  .foregroundStyle(.white)
+                            Text("Mis puntos: \(points)")
+                                .foregroundStyle(.white)
                         }
                         .padding(10)
                     }
@@ -83,6 +77,7 @@ struct Profile: View {
         .shadow(color: Color.black.opacity(0.4), radius: 5, x: 0, y: 5)
         .onAppear {
             fetchUserFirstName()
+            fetchUserPoints()
             loadProfileImage()
         }
         .sheet(isPresented: $isImagePickerPresented) {
@@ -102,11 +97,26 @@ struct Profile: View {
         userRef.getDocument { document, error in
             if let document = document, document.exists {
                 if let fullName = document.data()?["nombre"] as? String {
-                    // que solo se muestre el primer nombre
                     firstName = fullName.components(separatedBy: " ").first ?? "User"
                 }
             } else if let error = error {
                 print("Error fetching user data: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func fetchUserPoints() {
+        let db = Firestore.firestore()
+        guard !userID.isEmpty else { return }
+        
+        let userRef = db.collection("Usuario").document(userID)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                if let userPoints = document.data()?["puntos"] as? Int {
+                    points = userPoints
+                }
+            } else if let error = error {
+                print("Error fetching user points: \(error.localizedDescription)")
             }
         }
     }
@@ -121,7 +131,6 @@ struct Profile: View {
                 return
             }
             
-            // guardar el link de storage
             storageRef.downloadURL { url, error in
                 if let error = error {
                     print("Error getting download URL: \(error.localizedDescription)")
@@ -174,5 +183,4 @@ struct Profile: View {
 #Preview {
     Profile()
 }
-
 
