@@ -9,9 +9,9 @@ struct Insignia: Identifiable {
 }
 
 struct MenuView: View {
-    @State private var insignias: [Insignia] = [] // array de las insignias
+    @State private var insignias: [Insignia] = []
     @State private var selectedInsignia: Insignia?
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -51,32 +51,34 @@ struct MenuView: View {
                 }
             }
             .padding()
-
-            HStack(spacing: 10) {
-                ForEach(insignias) { insignia in
-                    Circle()
-                        .frame(width: 90)
-                        .foregroundStyle(Color.white)
-                        .overlay {
-                            AsyncImage(url: URL(string: insignia.imageUrl)) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                                    .clipShape(Circle())
-                            } placeholder: {
-                                ProgressView()
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(insignias) { insignia in
+                        Circle()
+                            .frame(width: 90)
+                            .foregroundStyle(Color.white)
+                            .overlay {
+                                AsyncImage(url: URL(string: insignia.imageUrl)) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                        .clipShape(Circle())
+                                } placeholder: {
+                                    ProgressView()
+                                }
                             }
-                        }
-                        .onTapGesture {
-                            withAnimation {
-                                selectedInsignia = insignia
+                            .onTapGesture {
+                                withAnimation {
+                                    selectedInsignia = insignia
+                                }
                             }
-                        }
+                    }
                 }
+                .padding(.bottom, 20)
             }
-            .padding(.bottom, 20)
         }
     }
-
+    
     private func fetchInsignias() {
         let db = Firestore.firestore()
         
@@ -86,16 +88,19 @@ struct MenuView: View {
                 return
             }
             
-            if let snapshot = snapshot {
-                insignias = snapshot.documents.compactMap { document in
-                    let data = document.data()
-                    return Insignia(
-                        id: document.documentID,
-                        name: data["nombre"] as? String ?? "Sin Nombre",
-                        description: data["descripcion"] as? String ?? "Sin Descripción",
-                        imageUrl: data["imagen_b"] as? String ?? ""
-                    )
-                }
+            guard let documents = snapshot?.documents else {
+                print("No badges found")
+                return
+            }
+            
+            insignias = documents.compactMap { document in
+                let data = document.data()
+                return Insignia(
+                    id: document.documentID,
+                    name: data["nombre"] as? String ?? "Sin Nombre",
+                    description: data["descripcion"] as? String ?? "Sin Descripción",
+                    imageUrl: data["imagen_b"] as? String ?? ""
+                )
             }
         }
     }
@@ -104,7 +109,7 @@ struct MenuView: View {
 struct FullScreenInsigniaOverlay: View {
     var insignia: Insignia
     var onDismiss: () -> Void
-
+    
     var body: some View {
         ZStack {
             Color.black.opacity(0.4)
@@ -140,13 +145,12 @@ struct FullScreenInsigniaOverlay: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
             )
-            .onTapGesture {
-            }
         }
         .transition(.scale)
     }
 }
 
+// Preview
 #Preview {
     MenuView()
 }
