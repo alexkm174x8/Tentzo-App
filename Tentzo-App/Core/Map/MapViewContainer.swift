@@ -4,15 +4,18 @@
 //
 //  Created by Miranda Colorado Arróniz on 07/11/24.
 //
-
 import SwiftUI
 import MapKit
 
 struct MapViewContainer: View {
+    var nombre: String
+    var distancia: String
+    var tiempo: String
+    var detalles: String
     var id_ruta: Int
     @StateObject private var viewModel = RouteViewModel()
     @State private var isFirstPersonViewEnabled = false
-    
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack(alignment: .topLeading) {
             if let errorMessage = viewModel.errorMessage {
@@ -26,7 +29,7 @@ struct MapViewContainer: View {
                     MapViewForRoute(
                         coordinates: viewModel.coordinates,
                         finishPoint: finishPoint,
-                        isFirstPersonViewEnabled: isFirstPersonViewEnabled // Pass the state
+                        isFirstPersonViewEnabled: isFirstPersonViewEnabled
                     )
                     .edgesIgnoringSafeArea(.all)
                 } else {
@@ -37,7 +40,7 @@ struct MapViewContainer: View {
             }
             
             Button(action: {
-                isFirstPersonViewEnabled.toggle() // Toggle first-person view
+                isFirstPersonViewEnabled.toggle() // Iniciar ruta
             }) {
                 Text("Iniciar ruta")
                     .font(.title3)
@@ -49,9 +52,26 @@ struct MapViewContainer: View {
             }
             .padding(.leading, 260)
             .padding(.top, 750)
+            
+            Button(action: {
+                dismiss()
+            }) {
+                Image(systemName: "chevron.left.circle.fill")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.white)
+                    .padding()
+                    .padding(.top, 11)
+                    .padding(.trailing, 330)
+
+            }
+            .padding()
+
+
         }
         .onAppear {
             viewModel.fetchCoordinates(for: id_ruta)
         }
     }
 }
+

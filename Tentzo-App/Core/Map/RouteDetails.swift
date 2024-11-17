@@ -65,6 +65,7 @@ struct RouteDetails: View {
                                     .bold()
                                     .foregroundColor(.black)
                                     .padding(.leading)
+                                    .padding(.leading, 5)
                                 
                                 ScrollView {
                                     VStack(alignment: .leading) {
@@ -112,8 +113,15 @@ struct RouteDetails: View {
             .ignoresSafeArea(edges: .bottom)
             .toolbar(.hidden, for: .tabBar)
             .sheet(isPresented: $showMapView) {
-                MapViewContainer(id_ruta: self.id_ruta)
+                MapViewContainer(
+                    nombre: self.nombre,
+                    distancia: self.distancia,
+                    tiempo: self.tiempo,
+                    detalles: self.detalles,
+                    id_ruta: self.id_ruta
+                )
             }
         }
     }
 }
+

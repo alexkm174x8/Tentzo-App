@@ -263,7 +263,7 @@ struct Camera: View {
                 }, label: {
                     Image(systemName: "chevron.left.circle.fill")
                         .resizable()
-                        .frame(width: 40, height: 40) // Adjust size as needed
+                        .frame(width: 40, height: 40)
                         .foregroundColor(.white)
                         .padding()
                         .clipShape(Circle())
