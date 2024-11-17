@@ -6,8 +6,8 @@ struct PlantInfo: View {
     @State private var retrievedImage: UIImage?
     var nomComun: String
     var imagen: String
-    var nomCientifico : String
-
+    var nomCientifico: String
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 30)
@@ -23,25 +23,24 @@ struct PlantInfo: View {
                         ProgressView()
                     }
                 }
-
             Text(nomComun == "" ? nomCientifico : nomComun)
                 .foregroundStyle(Color.black)
+                .font(.system(size: 10))
+                .frame(width: 100)
                 .lineLimit(1)
-                .minimumScaleFactor(0.5)
-                .font(.system(size: 16))
+                .multilineTextAlignment(.center)
         }
+        .padding(.leading, 5)
         .onAppear {
             retrievePhoto(from: imagen)
         }
     }
-
+    
     func retrievePhoto(from image: String) {
         guard let url = URL(string: image) else {
             print("URL no válida: \(image)")
             return
         }
-
-        // Cargar la imagen de forma asincrónica
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
@@ -54,7 +53,7 @@ struct PlantInfo: View {
     }
 }
 
-
 #Preview {
-    PlantInfo(nomComun: "Flor", imagen: "leaf.fill", nomCientifico: "Caca")
+    PlantInfo(nomComun: "Flor muy larga que desajusta", imagen: "leaf.fill", nomCientifico: "Caca")
 }
+
